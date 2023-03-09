@@ -172,6 +172,7 @@ const NewRestaurant = (props) => {
       const response = await fetch(requestUrl);
       const jsonSearchResults = await response.json();
 
+      console.log('SEARCH RESULTS', jsonSearchResults.results)
       const newSearchResults = {};
       for (const [googlePlaceId, googlePlaceInfo] of Object.entries(
         jsonSearchResults.results
@@ -206,13 +207,9 @@ const NewRestaurant = (props) => {
       newRestaurantInfo['name'] = restaurantDetails.name;
       newRestaurantInfo['address'] = restaurantDetails.address;
       newRestaurantInfo['category'] = restaurantDetails.category;
-      newRestaurantInfo['parking'] = 'Private lot parking';
       newRestaurantInfo['hours'] = restaurantDetails.hours;
-      newRestaurantInfo['menu'] = 'https://www.google.com';
-      newRestaurantInfo['dress-code'] = 'Casual';
       newRestaurantInfo['reservations'] = restaurantDetails.reservable;
       newRestaurantInfo['delivery'] = restaurantDetails.takeout;
-      newRestaurantInfo['credit-cards'] = true;
 
       setSearchResults({});
       setRestaurantInfo(newRestaurantInfo);

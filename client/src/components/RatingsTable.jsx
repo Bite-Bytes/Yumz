@@ -78,32 +78,32 @@ const RatingStars = props => {
   const stars = [];
   let filledStarsCount = 0;
   for (let i = 1; i < 6; i++) {
-    let star;
+    let starIcon;
     if (filledStarsCount < numFilledStars) {
-      star =
-        <span id={`star${i}`}
-          onClickCapture={(event) => onStarClick(event.target.id)}
-          className="rating-star"
-          key={i}>
-          <FontAwesomeIcon
-            icon={faStar}
-            id={`star${i}`} />
-        </span>;
+      starIcon = faStar;
       filledStarsCount++;
     } else {
-      star =
-        <span id={`star${i}`}
-          onClickCapture={(event) => onStarClick(event.target.id)}
-          className="rating-star"
-          key={i}>
-          <FontAwesomeIcon
-            icon={hollowStar}
-            className="rating-star"
-            id={`star${i}`} />
-        </span>;
+      starIcon = hollowStar;
     }
-    stars.push(star);
+
+    stars.push(
+      <span
+        key={i}
+      >
+        <div
+          className="star-overlay"
+          id={`star${i}`}
+          onClick={(event) => onStarClick(event.target.id)}>
+        </div>
+        <FontAwesomeIcon
+          icon={starIcon}
+          className="rating-star"
+        />
+      </span>
+    );
   }
+
+  console.log(stars);
 
   return (
     <span id="rating-stars">

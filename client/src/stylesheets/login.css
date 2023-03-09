@@ -1,6 +1,6 @@
 .login,
 .signup {
-  font-family: 'Fredoka One', cursive;
+  font-family: 'Fredoka One', sans-serif;
   color: #474747;
   text-align: center;
   padding: 50px;
@@ -15,7 +15,7 @@
   margin-top: 15px;
   padding: 10px;
   color: #474747;
-  font-family: 'Fredoka One', cursive;
+  font-family: 'Fredoka One', sans-serif;
   background-color: #FCF9E8;
   border: 3px solid #aa8cd7;
 }

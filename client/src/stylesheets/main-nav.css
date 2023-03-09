@@ -33,7 +33,7 @@
   transition-property: all;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
-  font-family: 'Fredoka One', cursive;
+  font-family: 'Fredoka One', sans-serif;
   letter-spacing: .3rem;
 }
 
