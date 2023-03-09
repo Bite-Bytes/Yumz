@@ -134,7 +134,7 @@ const onSearchLocationChange = (event) => {
           requestUrl += `&latitude=${latitude}&longitude=${longitude}`;
         }
       } else if (locationVal.length) {
-        requestUrl += ` near ${locationVal}`;
+        requestUrl += `&latitude=${searchLocation.lat()}&longitude=${searchLocation.lng()}`;
       }
       // TODO - not handling scenario where no search results come back..
       console.log(
