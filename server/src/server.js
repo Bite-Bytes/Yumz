@@ -52,19 +52,13 @@ app.post(
   sessionController.startSession
 );
 
-app.post(
-  '/addToWishlist',
-  restaurantController.addRestaurant,
-  collectionsController.addToWishlist,
-  (req, res) => {
-    res.status(200);
-    res.send(res.locals);
-  }
-);
+app.post('/addToWishlist', collectionsController.addToWishlist, (req, res) => {
+  res.status(200);
+  res.send(res.locals);
+});
 
 app.post(
   '/addToFavorites',
-  restaurantController.addRestaurant,
   collectionsController.addToFavorites,
   (req, res) => {
     res.status(200);
@@ -72,19 +66,20 @@ app.post(
   }
 );
 
-app.post(
-  '/addToReviews',
-  restaurantController.addRestaurant,
-  collectionsController.addToReviews,
-  (req, res) => {
-    res.status(200);
-    res.send(res.locals);
-  }
-);
+// addToReviews was empty
+app.post('/addToReviews', collectionsController.addToReviews, (req, res) => {
+  res.status(200);
+  res.send(res.locals);
+});
 
-// app.get('/reviews', collectionsController.getReviews, (req, res) => {
-//   res.status(200).send()
-// })
+// removeFromFavorites
+
+// removeFromWishlist
+
+// Was sending without any data;
+app.get('/reviews', collectionsController.getRatings, (req, res) => {
+  res.status(200).send(res.locals.userRatings);
+});
 
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../../client/src/index.html'));
@@ -106,3 +101,5 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
+// /api/search?query=pizza&latitude=35.8490542&longitude=-78.6762052
