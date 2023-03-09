@@ -1,5 +1,5 @@
 import React from 'react';
-import { faPlus, faUser, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faUser, faHouse, faBurger, faMugHot, faHeart } from '@fortawesome/free-solid-svg-icons';
 import styles from '../stylesheets/vertical-nav.css';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,9 +18,21 @@ const VerticalNav = props => {
         btnName="user"
         onClickHandler={() => navigate('/login')} />
       <VerticalNavItem
-        iconName={faPlus}
+        iconName={faMagnifyingGlass}
         btnName="addRestaurant"
         onClickHandler={() => navigate('/new-restaurant')} />
+      <VerticalNavItem
+        iconName={faBurger}
+        btnName="reviews"
+        onClickHandler={() => navigate('/reviews')} />
+      <VerticalNavItem
+        iconName={faMugHot}
+        btnName="wishlist"
+        onClickHandler={() => navigate('/wishlist')} />
+      <VerticalNavItem
+        iconName={faHeart}
+        btnName="favorites"
+        onClickHandler={() => navigate('/favorites')} />
     </div>
   );
 };
