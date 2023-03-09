@@ -40,12 +40,16 @@
   /* border: 5px solid #aa8cd7; */
 }
 
-.previewButton {
+.preview-button {
   border: none;
   background-color: #f3ebff;
   color: #474747;
   font-size: 1em;
   font-family: 'Fredoka One', sans-serif;
+}
+
+.fav-button {
+  border: none;
 }
 
 #name {

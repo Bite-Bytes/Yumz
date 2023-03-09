@@ -1,10 +1,15 @@
 import React, { Component, useState } from 'react';
 import DetailsModal from './DetailsModal.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBurger, faMugHot, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as hollowHeart } from '@fortawesome/free-regular-svg-icons';
+
 
 const ListItem = (props) => {
   const [modalStatus, setModalStatus] = useState(false);
   const [restaurantInfo, setRestaurantInfo] = useState({});
   const [detailsToggle, setDetailsToggle] = useState('Show details');
+  const [favIcon, setFavIcon] = useState(hollowHeart);
 
   console.log('PROPS', props)
   const toggleModal = async (googlePlaceId) => {
@@ -33,18 +38,13 @@ const ListItem = (props) => {
       console.log('RESTAURANT DETAILS', restaurantDetails);
       const newRestaurantInfo = await {};
       newRestaurantInfo['googlePlaceId'] = restaurantDetails.id;
+      // newRestaurantInfo['yelpId'] = restaurantDetails.yelpId || 'get from yelp';
       newRestaurantInfo['name'] = restaurantDetails.name;
       newRestaurantInfo['address'] = restaurantDetails.address;
       newRestaurantInfo['hours'] = restaurantDetails.hours;
       newRestaurantInfo['reservations'] = restaurantDetails.reservable;
       newRestaurantInfo['delivery'] = restaurantDetails.takeout;
-
-      // PASS RESTAURANT NAME AND LATLONG TO BACKEND TO GET BELOW FROM YELP
       newRestaurantInfo['category'] = restaurantDetails.category;
-      newRestaurantInfo['parking'] = 'Private lot parking';
-      newRestaurantInfo['menu'] = 'https://www.google.com';
-      newRestaurantInfo['dress-code'] = 'Casual';
-      newRestaurantInfo['credit-cards'] = true;
 
       setRestaurantInfo(newRestaurantInfo);
 
@@ -65,24 +65,48 @@ const ListItem = (props) => {
     else return ''
   }
 
-  return (
-    <div className="list-item-container">
-      <div className="preview">
-        <div>
-          <span className="item" id="name">{props.listing.name}</span>
-          <span className="item" id="address">{getAddress()}</span>
-        </div>
-        <div>
-          <span className="item" id="stars">{getStars()}</span>
-          {/* <span className="item" id="cuisine">{props.listing.cuisine}</span>
-      <span className="item" id="hours">{props.listing.hours}</span> */}
-          {/* <button type="button" className="previewButton" onClick={() => setModalStatus(true)}>See Details</button> */}
-          <button type="button" className="previewButton" onClick={() => toggleModal(props.listing.googlePlaceId)}>{detailsToggle}</button>
-        </div>
-      </div>
-      <DetailsModal restaurantInfo={restaurantInfo} show={modalStatus} />
-    </div>
-  );
-};
+  const toggleFav = async (googlePlaceId) => {
+    let is_favorite;
 
-export default ListItem;
+    // NEED GET RESTAURANT ROUTE FROM BE - FOR NOW RELYING ON STATE
+    if (favIcon === hollowHeart) {
+      is_favorite = false;
+      setFavIcon(faHeart);
+    } else if (favIcon === faHeart) {
+      is_favorite = true;
+      setFavIcon(hollowHeart);
+
+      const reqBody = {
+        googleplace_id: googlePlaceId,
+        is_favorite: true
+      };
+
+      // const response = await fetch('/addToFavorites', {
+      //   method: 'POST',
+      //   body: JSON.stringify
+      // })
+
+    }
+
+    return (
+      <div className="list-item-container">
+        <div className="preview">
+          <div>
+            <span className="item" id="name">{props.listing.name}</span>
+            <span className="item" id="address">{getAddress()}</span>
+          </div>
+          <div>
+            <button type="button" className="fav-button" onClick={() => toggleFav(props.listing.googlePlaceId)}><FontAwesomeIcon icon={favIcon} /></button>
+            <span className="item" id="stars">{getStars()}</span>
+            {/* <span className="item" id="cuisine">{props.listing.cuisine}</span>
+      <span className="item" id="hours">{props.listing.hours}</span> */}
+            {/* <button type="button" className="previewButton" onClick={() => setModalStatus(true)}>See Details</button> */}
+            <button type="button" className="preview-button" onClick={() => toggleModal(props.listing.googlePlaceId)}>{detailsToggle}</button>
+          </div>
+        </div>
+        <DetailsModal restaurantInfo={restaurantInfo} show={modalStatus} />
+      </div>
+    );
+  };
+
+  export default ListItem;
