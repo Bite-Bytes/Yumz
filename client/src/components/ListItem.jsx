@@ -108,5 +108,6 @@ const ListItem = (props) => {
       </div>
     );
   };
+}
 
-  export default ListItem;
+export default ListItem;
