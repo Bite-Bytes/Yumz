@@ -41,6 +41,7 @@ yelpFusionAPIController.getRestaurantDetails = async (req, res, next) => {
     const restaurantDetailsResult = await restaurantDetailsResponse.json();
     // console.log(restaurantDetailsResult.businesses[0]);
     const categories = restaurantDetailsResult.businesses[0].categories;
+    const yelpID = restaurantDetailsResult.businesses[0].id;
     const returnedCategories = { category: '' };
     for (let i = 0; i < categories.length; i++) {
       if (i === categories.length - 1)
