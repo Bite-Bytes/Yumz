@@ -33,8 +33,7 @@ app.post(
     else return next();
   },
   userController.createUser,
-  cookieController.setJWTCookie,
-  sessionController.startSession
+  cookieController.setJWTCookie
 );
 
 app.post(
@@ -48,8 +47,7 @@ app.post(
     else return next();
   },
   userController.verifyUser,
-  cookieController.setJWTCookie,
-  sessionController.startSession
+  cookieController.setJWTCookie
 );
 
 app.post(

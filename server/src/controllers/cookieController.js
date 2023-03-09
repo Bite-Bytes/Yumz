@@ -18,6 +18,7 @@ cookieController.setJWTCookie = async (req, res, next) => {
     const { email } = req.body;
 
     const jwtToken = createJWT(email);
+
     res.locals.JWT = jwtToken;
     res.cookie('JWT', jwtToken, {
       httpOnly: true,

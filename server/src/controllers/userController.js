@@ -23,8 +23,8 @@ userController.protect = (req, res, next) => {
   } catch (error) {
     return next({
       log: 'error running userController.protect middleware.',
-      status: 401,
-      message: { message: 'Not valid token' },
+      status: 400,
+      message: { message: error },
     });
   }
 };
