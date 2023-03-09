@@ -14,12 +14,13 @@ module.exports = {
       publicPath: '/'
     },
     proxy: {
-      '/**': {
+      '/api': {
         target: 'http://localhost:3000/',
         secure: false,
       },
     },
     compress: true,
+    historyApiFallback: true,
   },
   plugins: [
     new HTMLWebpackPlugin({
