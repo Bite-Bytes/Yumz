@@ -65,7 +65,7 @@ const ListItem = (props) => {
     else return ''
   }
 
-  const toggleFav = async (googlePlaceId) => {
+  const toggleFav = (googlePlaceId) => {
     let is_favorite;
 
     // NEED GET RESTAURANT ROUTE FROM BE - FOR NOW RELYING ON STATE
@@ -87,27 +87,28 @@ const ListItem = (props) => {
       // })
 
     }
+  }
 
-    return (
-      <div className="list-item-container">
-        <div className="preview">
-          <div>
-            <span className="item" id="name">{props.listing.name}</span>
-            <span className="item" id="address">{getAddress()}</span>
-          </div>
-          <div>
-            <button type="button" className="fav-button" onClick={() => toggleFav(props.listing.googlePlaceId)}><FontAwesomeIcon icon={favIcon} /></button>
-            <span className="item" id="stars">{getStars()}</span>
-            {/* <span className="item" id="cuisine">{props.listing.cuisine}</span>
-      <span className="item" id="hours">{props.listing.hours}</span> */}
-            {/* <button type="button" className="previewButton" onClick={() => setModalStatus(true)}>See Details</button> */}
-            <button type="button" className="preview-button" onClick={() => toggleModal(props.listing.googlePlaceId)}>{detailsToggle}</button>
-          </div>
+  return (
+    <div className="list-item-container">
+      <div className="preview">
+        <div>
+          <span className="item" id="name">{props.listing.name}</span>
+          <span className="item" id="address">{getAddress()}</span>
         </div>
-        <DetailsModal restaurantInfo={restaurantInfo} show={modalStatus} />
+        <div>
+          <button type="button" className="fav-button" onClick={() => toggleFav(props.listing.googlePlaceId)}><FontAwesomeIcon icon={favIcon} /></button>
+          <span className="item" id="stars">{getStars()}</span>
+          {/* <span className="item" id="cuisine">{props.listing.cuisine}</span>
+      <span className="item" id="hours">{props.listing.hours}</span> */}
+          {/* <button type="button" className="previewButton" onClick={() => setModalStatus(true)}>See Details</button> */}
+          <button type="button" className="preview-button" onClick={() => toggleModal(props.listing.googlePlaceId)}>{detailsToggle}</button>
+        </div>
       </div>
-    );
-  };
-}
+      <DetailsModal restaurantInfo={restaurantInfo} show={modalStatus} />
+    </div>
+  );
+};
+
 
 export default ListItem;
