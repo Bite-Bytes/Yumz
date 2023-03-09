@@ -3,13 +3,13 @@ import styles from '../stylesheets/rating-notes.css';
 
 const RatingNotes = props => {
   return (
-    <>
+    <div>
       <textarea id="rating-notes" type="text" />
       <button className="details-modal-button"
         onClick={props.clickHandler}>
         {props.buttonText}
       </button>
-    </>
+    </div>
   );
 };
 

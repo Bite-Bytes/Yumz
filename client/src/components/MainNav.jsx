@@ -1,5 +1,5 @@
 import React from 'react';
-import { faBurger, faMugHot, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faBurger, faMartiniGlass, faHeart } from '@fortawesome/free-solid-svg-icons';
 import styles from '../stylesheets/main-nav.css';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,7 +23,7 @@ const MainNav = props => {
         btnText="Reviews"
         onClickHandler={(e) => navigate('/reviews')} />
       <MainNavItem
-        iconName={faMugHot}
+        iconName={faMartiniGlass}
         btnId="main-nav-wishlist"
         btnText="Wishlist"
         onClickHandler={(e) => navigate('/wishlist')} />
