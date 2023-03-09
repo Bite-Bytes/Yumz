@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon server/src/server.js",
     "build": "webpack --mode production",
-    "dev": "webpack-dev-server --mode development --open --hot & nodemon server/src/server.js"
+    "dev": "webpack-dev-server --mode development --open --hot --history-api-fallback & nodemon server/src/server.js"
   },
   "keywords": [],
   "author": "",

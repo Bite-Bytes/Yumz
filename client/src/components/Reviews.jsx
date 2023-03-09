@@ -2,15 +2,15 @@ import React, { Component, useState, useEffect } from 'react';
 import CollectionList from './CollectionList.jsx';
 
 export const Reviews = () => {
-
-  const [listItems, setListItems] = useState(
-    [{
+  const [reviews, setReviews] = useState([]);
+  const [listItems, setListItems] = useState([
+    {
       name: 'Ramen House',
       rating: 8,
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
       preview: 'Lorem ipsum...',
-      id: 1
+      id: 1,
     },
     {
       name: 'Ramen place',
@@ -18,8 +18,9 @@ export const Reviews = () => {
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
       preview: 'Lorem ipsum...',
-      id: 2
-    }]);
+      id: 2,
+    },
+  ]);
 
   // useEffect(() => {
   //   async function fetchReviews() {
@@ -29,8 +30,6 @@ export const Reviews = () => {
   //   }
   //   fetchReviews();
   // });
-  return (
-    <CollectionList restaurants={listItems} listName="Reviews" />
-  );
-};
 
+  return <CollectionList restaurants={listItems} listName='Reviews' />;
+};

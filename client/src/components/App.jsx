@@ -2,7 +2,6 @@ import React, { Component, useState, useEffect } from 'react';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { Login } from './Login.jsx';
 import { Signup } from './Signup.jsx';
-import { Reviews } from './Reviews.jsx';
 import { Favorites } from './Favorites.jsx';
 import { Wishlist } from './Wishlist.jsx';
 import Landing from './Landing.jsx';
@@ -30,12 +29,12 @@ function App() {
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/collection' element={<CollectionList />} />
+          {/* <Route path='/collection' element={<CollectionList />} /> */}
           <Route path='/' element={<Landing />} />
-          <Route path='/reviews' element={<Reviews />} />
-          <Route path='/favorites' element={<Favorites />} />
-          <Route path='/wishlist' element={<Wishlist />} />
-          <Route path='/details-modal' element={<DetailsModal show={true} />} />
+          <Route path='/reviews' element={<CollectionList listName="Reviews" />} />
+          <Route path='/favorites' element={<CollectionList listName="Reviews" />} />
+          <Route path='/wishlist' element={<CollectionList listName="Wishlist" />} />
+          {/* <Route path='/details-modal' element={<DetailsModal show={true} />} /> */}
           <Route path='/new-restaurant' element={<NewRestaurant />} />
         </Routes>
       </div>

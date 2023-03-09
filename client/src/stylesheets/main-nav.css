@@ -22,6 +22,7 @@
 }
 
 .main-nav-btn {
+  min-width: 300px;
   width: 25vw;
   height: 16rem;
   font-size: 2.5rem;
@@ -43,4 +44,14 @@
 
 .main-nav-icon {
   font-size: 5rem;
+}
+
+@media only screen and (max-width: 1200px) {
+  #main-nav {
+    flex-direction: column;
+  }
+
+  .main-nav-btn {
+    width: 50vw;
+  }
 }
