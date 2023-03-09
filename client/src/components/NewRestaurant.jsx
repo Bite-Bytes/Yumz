@@ -191,34 +191,6 @@ const NewRestaurant = (props) => {
     }
   };
 
-  // const onSearchResultClick = async (event, selectedRestaurant) => {
-  //   console.log(selectedRestaurant);
-  //   try {
-  //     const googlePlaceId = selectedRestaurant.googlePlaceId;
-  //     const requestUrl = `/api/place-details?placeID=${googlePlaceId}`;
-
-  //     const response = await fetch(requestUrl);
-  //     const restaurantDetails = await response.json();
-
-  //     // Note: Google Places API doesn't provide all of the details, so hardcoding for now
-  //     // Yelp API should provide remaining details
-  //     const newRestaurantInfo = await {};
-  //     newRestaurantInfo['googlePlaceId'] = restaurantDetails.id;
-  //     newRestaurantInfo['name'] = restaurantDetails.name;
-  //     newRestaurantInfo['address'] = restaurantDetails.address;
-  //     newRestaurantInfo['category'] = restaurantDetails.category;
-  //     newRestaurantInfo['hours'] = restaurantDetails.hours;
-  //     newRestaurantInfo['reservations'] = restaurantDetails.reservable;
-  //     newRestaurantInfo['delivery'] = restaurantDetails.takeout;
-
-  //     setSearchResults({});
-  //     setRestaurantInfo(newRestaurantInfo);
-  //   } catch (error) {
-  //     // This should be better error handling..
-  //     console.log('NewRestaurant onSearchResultClick error', error.message);
-  //   }
-  // };
-
   const onFinishBtnClick = async () => {
     navigate('/reviews');
   };
@@ -240,7 +212,6 @@ const NewRestaurant = (props) => {
         name={googlePlaceInfo.name}
         address={googlePlaceInfo.address}
         googlePlaceId={googlePlaceId}
-        // onSearchResultClick={onSearchResultClick}
         key={googlePlaceId}
       />
     );

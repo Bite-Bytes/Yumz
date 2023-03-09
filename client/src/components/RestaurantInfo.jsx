@@ -163,25 +163,25 @@ const DetailsTable = props => {
           <td>
             {props.details['reservations']}
           </td>
-          <td>
+          {/* <td>
             {props.details['menu']}
-          </td>
+          </td> */}
         </tr>
         <tr>
           <td>
             {props.details['credit-cards']}
           </td>
-          <td>
+          {/* <td>
             {props.details['dress-code']}
-          </td>
+          </td> */}
         </tr>
         <tr>
           <td>
             {props.details['delivery']}
           </td>
-          <td>
+          {/* <td>
             {props.details['parking']}
-          </td>
+          </td> */}
         </tr>
       </tbody>
     </table>

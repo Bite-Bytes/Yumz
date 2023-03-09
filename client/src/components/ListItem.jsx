@@ -12,8 +12,6 @@ const ListItem = (props) => {
   const [is_favorite, setFavorite] = useState(props.listing.is_favorite);
   const [is_wishlist, setWishlist] = useState(props.listing.is_wishlist);
 
-  console.log('PROPS', props)
-
   const toggleModal = async (googlePlaceId) => {
     if (modalStatus) {
       setModalStatus(false);
@@ -29,14 +27,12 @@ const ListItem = (props) => {
   };
 
   const showModal = async (googlePlaceId) => {
-    console.log(googlePlaceId);
     try {
       const requestUrl = `/api/place-details?placeID=${googlePlaceId}`;
 
       const response = await fetch(requestUrl);
       const restaurantDetails = await response.json();
 
-      console.log('RESTAURANT DETAILS', restaurantDetails);
       const newRestaurantInfo = await {};
       newRestaurantInfo['googlePlaceId'] = restaurantDetails.id;
       // newRestaurantInfo['yelpId'] = restaurantDetails.yelpId || 'get from yelp';
