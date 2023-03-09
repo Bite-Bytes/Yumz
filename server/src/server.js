@@ -50,6 +50,8 @@ app.post(
   cookieController.setJWTCookie
 );
 
+app.patch('/rating');
+
 app.post(
   '/addToWishlist',
   restaurantController.addRestaurant,
