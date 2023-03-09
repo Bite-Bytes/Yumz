@@ -20,3 +20,14 @@ td.stars {
   text-align: left;
   padding-left: 1rem;
 }
+
+.star-overlay {
+  display: inline;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+}
+
+.star-overlay:hover {
+  cursor: pointer;
+}
