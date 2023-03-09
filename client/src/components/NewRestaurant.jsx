@@ -13,26 +13,88 @@ import DetailsModal from './DetailsModal.jsx';
 const NewRestaurant = (props) => {
   const [restaurantInfo, setRestaurantInfo] = useState(null);
   const [searchResults, setSearchResults] = useState({});
+  const [searchLocation, setSearchLocation] = useState(null);
 
-  // Create two ref objects using the useRef hook, which will be used to reference the Autocomplete instance and the input element
-  const autoCompleteRef = useRef();
-  const inputRef = useRef();
 
-  // Define the options for the Autocomplete instance, including the country restriction, fields to return, and types of results to search for
-  const options = {
-    componentRestrictions: { country: 'us' },
-    fields: ['address_components', 'geometry', 'icon', 'name'],
-    types: ['establishment'],
+// Create two ref objects using the useRef hook, which will be used to reference the Autocomplete instance and the input element
+const autoCompleteRef = useRef();
+const inputRef = useRef();
+
+// Create a bounding box with sides 10km away from the center point at each cardinal
+const defaultBounds = {
+  north: 37.8324,
+  south: 37.5209,
+  east: -121.8300,
+  west: -122.5137,
+};
+
+// Define the options for the Autocomplete class
+const options = {
+  bounds: defaultBounds, // set the bounds to the bounding box
+  componentRestrictions: { country: "us" }, // restrict the search to the US
+  fields: ["address_components", "geometry", "icon", "name"], // specify what fields to return
+  strictBounds: false, // don't restrict the search to the bounding box
+  types: ["establishment"], // only return businesses
+};
+
+// Use the useEffect hook to initialize the Autocomplete instance when the component mounts
+useEffect(() => {
+  // Set the value of the autoCompleteRef to a new instance of the Autocomplete class, passing in the input element and the options object as parameters
+  autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+    inputRef.current,
+    options 
+  );
+}, []);
+
+useEffect(() => {
+  let center = { lat: 37.7749, lng: -122.4194 }; // default to SF
+  if (searchLocation) { // if searchLocation is set, use it as the center point
+    center = { lat: searchLocation.lat(), lng: searchLocation.lng() };
+  }
+
+  // Create a new bounding box with sides 10km away from the center point
+  const defaultBounds = {
+    north: center.lat + 0.1,
+    south: center.lat - 0.1,
+    east: center.lng + 0.1,
+    west: center.lng - 0.1,
   };
 
-  // Use the useEffect hook to initialize the Autocomplete instance when the component mounts
-  useEffect(() => {
-    // Set the value of the autoCompleteRef to a new instance of the Autocomplete class, passing in the input element and the options object as parameters
-    autoCompleteRef.current = new window.google.maps.places.Autocomplete(
-      inputRef.current,
-      options
-    );
-  }, []);
+  // Define the updated options for the Autocomplete instance
+  const updatedOptions = {
+    bounds: defaultBounds,
+    componentRestrictions: { country: "us" },
+    fields: ["address_components", "geometry", "icon", "name"],
+    strictBounds: false,
+    types: ["establishment"],
+  };
+
+  // Update the options for the Autocomplete instance
+  autoCompleteRef.current.setOptions(updatedOptions);
+}, [searchLocation]); // update the options when the searchLocation state changes
+
+const onSearchLocationChange = (event) => {
+  const postalCode = event.target.value; // get the value of the input element
+  if (postalCode.length === 5) { // check if input length is 5
+    // Use the Geocoder to convert the postal code to a LatLng object
+    console.log('geocoding postal code...')
+    const geocoder = new window.google.maps.Geocoder(); // create a new Geocoder instance
+    geocoder.geocode({ address: postalCode, componentRestrictions: { country: 'us' } }, (results, status) => { // geocode the postal code
+      if (status === 'OK') { // if the geocode was successful
+        const lat = results[0].geometry.location.lat(); // get the latitude and longitude from the results
+        const lng = results[0].geometry.location.lng(); 
+        const newLocation = new window.google.maps.LatLng(lat, lng); //  and create a new LatLng class
+        console.log('lat', newLocation.lat()); //LOG FOR DEBUGGIN
+        setSearchLocation(newLocation); // set the searchLocation state to the new LatLng class
+      } else {
+        console.log('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  } else {
+    // handle invalid input length
+    setSearchLocation(null);
+  }
+};
 
   const navigate = useNavigate();
 
@@ -72,7 +134,7 @@ const NewRestaurant = (props) => {
           requestUrl += `&latitude=${latitude}&longitude=${longitude}`;
         }
       } else if (locationVal.length) {
-        requestUrl += ` near ${locationVal}`;
+        requestUrl += `&latitude=${searchLocation.lat()}&longitude=${searchLocation.lng()}`;
       }
       // TODO - not handling scenario where no search results come back..
       console.log(
@@ -145,6 +207,10 @@ const NewRestaurant = (props) => {
     setSearchResults({});
   };
 
+  const onReturnHomeBtnClick = () => {
+    navigate('/');
+  };
+
   const searchResultItems = [];
   for (const [googlePlaceId, googlePlaceInfo] of Object.entries(
     searchResults
@@ -162,7 +228,6 @@ const NewRestaurant = (props) => {
 
   if (searchResultItems.length > 0) {
     // VIEW SEARCH RESULTS
-    // console.log(searchResults)
     return (
       <CollectionList
         listName={'Search Results'}
@@ -185,46 +250,40 @@ const NewRestaurant = (props) => {
     return (
       <div id='new-restaurant-info'>
         <div id='new-restaurant-header'>Add a Restaurant</div>
-        <div className='new-restaurant-prompt'>
-          What is the name of the restaurant?
-        </div>
+        <div className='new-restaurant-prompt'>Enter your ZIP code here!</div>
         <form
           onSubmit={(event) => submitRestaurantName(event)}
           autoComplete='off'>
-          <input
-            id='restaurant-name-input'
-            name='restaurant-name-input'
-            className='new-restaurant-input'
-            type='text'
-            ref={inputRef}
-          />
-          <br />
-          <label
-            className='new-restaurant-prompt'
-            htmlFor='restaurant-location-input'>
-            Add a location to search in?
-          </label>
-          <br />
           <input
             id='restaurant-location-input'
             name='restaurant-location-input'
             className='new-restaurant-input'
             type='text'
             list='location-options'
+            onChange={onSearchLocationChange}
           />
           <datalist id='location-options'>
             <option value='Current Location' />
           </datalist>
           <br />
+          <label className='new-restaurant-prompt'
+            htmlFor='restaurant-location-input'>
+            Add an address!
+          </label><br />
           <input
-            type='submit'
+            id='restaurant-name-input'
+            name='restaurant-name-input'
+            className='new-restaurant-input'
+            type='text' 
+            ref={inputRef}/><br />
+          <input type='submit'
             value='Next'
             className='new-restaurant-button'></input>
         </form>
       </div>
     );
   } else {
-    // // VIEW RESTAURANT DETAILS
+    // VIEW RESTAURANT DETAILS
     // return (
     //   <div id='new-restaurant-info'>
     //     <div id="restaurant-name">{restaurantInfo.name}</div>

@@ -79,6 +79,7 @@ app.post(
     res.send(res.locals.query);
   }
 );
+
 // removeFromWishlist
 app.post(
   '/removeFromWishlist',
