@@ -34,24 +34,21 @@ const DetailsModal = props => {
       <div id="details-modal">
         <div id="restaurant-name">
           {props.restaurantInfo.name}
-          <span
-            id="closeBtn"
-            onClick={props.close}>x</span>
         </div>
         <RestaurantInfo info={props.restaurantInfo} />
         <div className="section-header">
-          <span>Ratings
-            <span id="last-edited-date">({lastEdited})</span>
+          <span className="section-title">Ratings
+            {/* <span id="last-edited-date">({lastEdited})</span> */}
           </span>
+          <RatingsTable />
         </div>
         {/* TO DO - set numStarsFilled from props */}
-        <RatingsTable />
         <div className="section-header">
-          <span>Notes</span>
+          <span className="section-title">Notes</span>
+          <RatingNotes
+            clickHandler={onSaveChangesBtnClick}
+            buttonText='Save Changes' />
         </div>
-        <RatingNotes
-          clickHandler={onSaveChangesBtnClick}
-          buttonText='Save Changes' />
       </div>
     );
   }

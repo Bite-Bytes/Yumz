@@ -32,7 +32,7 @@ function App() {
           {/* <Route path='/collection' element={<CollectionList />} /> */}
           <Route path='/' element={<Landing />} />
           <Route path='/reviews' element={<CollectionList listName="Reviews" />} />
-          <Route path='/favorites' element={<CollectionList listName="Reviews" />} />
+          <Route path='/favorites' element={<CollectionList listName="Favorites" />} />
           <Route path='/wishlist' element={<CollectionList listName="Wishlist" />} />
           {/* <Route path='/details-modal' element={<DetailsModal show={true} />} /> */}
           <Route path='/new-restaurant' element={<NewRestaurant />} />
