@@ -50,13 +50,19 @@ app.post(
   cookieController.setJWTCookie
 );
 
-app.post('/addToWishlist', collectionsController.addToWishlist, (req, res) => {
-  res.status(200);
-  res.send(res.locals);
-});
+app.post(
+  '/addToWishlist',
+
+  collectionsController.addToWishlist,
+  (req, res) => {
+    res.status(200);
+    res.send(res.locals);
+  }
+);
 
 app.post(
   '/addToFavorites',
+  restaurantController.addRestaurant,
   collectionsController.addToFavorites,
   (req, res) => {
     res.status(200);
@@ -65,10 +71,15 @@ app.post(
 );
 
 // addToReviews was empty
-app.post('/addToReviews', collectionsController.addToReviews, (req, res) => {
-  res.status(200);
-  res.send(res.locals.query);
-});
+app.post(
+  '/addToReviews',
+  restaurantController.addRestaurant,
+  collectionsController.addToReviews,
+  (req, res) => {
+    res.status(200);
+    res.send(res.locals.query);
+  }
+);
 
 // removeFromFavorites
 
