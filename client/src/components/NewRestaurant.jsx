@@ -10,7 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import CollectionList from './CollectionList.jsx';
 import DetailsModal from './DetailsModal.jsx';
 
-const NewRestaurant = props => {
+
+
+const NewRestaurant = (props) => {
 
   const [restaurantInfo, setRestaurantInfo] = useState(null);
   const [searchResults, setSearchResults] = useState({});
@@ -61,6 +63,7 @@ useEffect(() => {
     west: center.lng - 0.1,
   };
 
+
   // Define the updated options for the Autocomplete instance
   const updatedOptions = {
     bounds: defaultBounds,
@@ -68,7 +71,6 @@ useEffect(() => {
     fields: ["address_components", "geometry", "icon", "name"],
     strictBounds: false,
     types: ["establishment"],
-  };
 
   // Update the options for the Autocomplete instance
   autoCompleteRef.current.setOptions(updatedOptions);
@@ -111,7 +113,9 @@ const onSearchLocationChange = (event) => {
         return;
       }
 
-      const locationInput = document.querySelector('#restaurant-location-input');
+      const locationInput = document.querySelector(
+        '#restaurant-location-input'
+      );
       const locationVal = locationInput.value;
 
       let requestUrl = `/api/search?query=${restaurantName}`;
@@ -122,8 +126,12 @@ const onSearchLocationChange = (event) => {
       // - For an empty string, Google Places API will default to user's location (based on IP address of req?)
       if (locationVal === 'Current Location') {
         const userCoords = helperFns.retrieveUserCoords();
-        const latitude = Object.hasOwn(userCoords, 'latitude') ? userCoords.latitude : null;
-        const longitude = Object.hasOwn(userCoords, 'longitude') ? userCoords.longitude : null;
+        const latitude = Object.hasOwn(userCoords, 'latitude')
+          ? userCoords.latitude
+          : null;
+        const longitude = Object.hasOwn(userCoords, 'longitude')
+          ? userCoords.longitude
+          : null;
 
         if (latitude && longitude) {
           requestUrl += `&latitude=${latitude}&longitude=${longitude}`;
@@ -132,18 +140,26 @@ const onSearchLocationChange = (event) => {
         requestUrl += ` near ${locationVal}`;
       }
       // TODO - not handling scenario where no search results come back..
-      console.log('submitRestaurantName, searching for restaurant name:', restaurantName,
-        'location val: ', locationVal);
+      console.log(
+        'submitRestaurantName, searching for restaurant name:',
+        restaurantName,
+        'location val: ',
+        locationVal
+      );
 
       console.log('NewRestaurant sending request to ', requestUrl);
       const response = await fetch(requestUrl);
       const jsonSearchResults = await response.json();
 
       const newSearchResults = {};
-      for (const [googlePlaceId, googlePlaceInfo] of Object.entries(jsonSearchResults.results)) {
+      for (const [googlePlaceId, googlePlaceInfo] of Object.entries(
+        jsonSearchResults.results
+      )) {
         newSearchResults[googlePlaceId] = {
-          'name': googlePlaceInfo.name,
-          'address': googlePlaceInfo.address
+
+          googlePlaceId: googlePlaceId,
+          name: googlePlaceInfo.name,
+          address: googlePlaceInfo.address,
         };
       }
 
@@ -169,7 +185,8 @@ const onSearchLocationChange = (event) => {
       newRestaurantInfo['googlePlaceId'] = restaurantDetails.id;
       newRestaurantInfo['name'] = restaurantDetails.name;
       newRestaurantInfo['address'] = restaurantDetails.address;
-      newRestaurantInfo['category'] = 'American (Traditional), Pizza, Pasta Shops';
+      newRestaurantInfo['category'] =
+        'American (Traditional), Pizza, Pasta Shops';
       newRestaurantInfo['parking'] = 'Private lot parking';
       newRestaurantInfo['hours'] = restaurantDetails.hours;
       newRestaurantInfo['menu'] = 'https://www.google.com';
@@ -186,9 +203,8 @@ const onSearchLocationChange = (event) => {
     }
   };
 
-  const onFinishBtnClick = () => {
-    console.log('Finish button clicked');
-    // TO DO - post request to /restaurant
+  const onFinishBtnClick = async () => {
+    navigate('/reviews');
   };
 
   const onReturnSearchBtnClick = () => {
@@ -200,7 +216,9 @@ const onSearchLocationChange = (event) => {
   };
 
   const searchResultItems = [];
-  for (const [googlePlaceId, googlePlaceInfo] of Object.entries(searchResults)) {
+  for (const [googlePlaceId, googlePlaceInfo] of Object.entries(
+    searchResults
+  )) {
     searchResultItems.push(
       <RestaurantSearchResult
         name={googlePlaceInfo.name}
@@ -215,23 +233,28 @@ const onSearchLocationChange = (event) => {
   if (searchResultItems.length > 0) {
     // VIEW SEARCH RESULTS
     return (
-      <div id='new-restaurant-info'>
-        <div id='new-restaurant-header'>Search Results</div>
-        <button
-          className='new-restaurant-button'
-          onClick={onReturnSearchBtnClick}>
-          Return to Search
-        </button>
-        {searchResultItems}
-        {/* Skipping next button functionality for now..
-        <button id='next-button'>Next</button> */}
-      </div>
+      <CollectionList
+        listName={'Search Results'}
+        searchResults={searchResults}
+      />
+      // <div id='new-restaurant-info'>
+      //   <div id='new-restaurant-header'>Search Results</div>
+      //   <button
+      //     className='new-restaurant-button'
+      //     onClick={onReturnSearchBtnClick}>
+      //     Return to Search
+      //   </button>
+      //   {searchResultItems}
+      //   {/* Skipping next button functionality for now..
+      //   <button id='next-button'>Next</button> */}
+      // </div>
     );
   } else if (restaurantInfo === null) {
     // SEARCH FOR A RESTAURANT
     return (
       <div id='new-restaurant-info'>
         <div id='new-restaurant-header'>Add a Restaurant</div>
+
         <div className='new-restaurant-prompt'>Enter your ZIP code here!</div>
         <form
           onSubmit={(event) => submitRestaurantName(event)}
