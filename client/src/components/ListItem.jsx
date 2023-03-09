@@ -60,8 +60,7 @@ const ListItem = (props) => {
   }
 
   const getAddress = () => {
-    if (props.listing.address.split()) return props.listing.address.split(',')[0];
-    else if (props.listing.address) return props.listing.address;
+    if (props.listing.address) return props.listing.address.split(',')[0];
     else return ''
   }
 
