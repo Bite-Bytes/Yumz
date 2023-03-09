@@ -13,21 +13,28 @@ const collectionsController = {};
 collectionsController.getReviews = async (req, res, next) => {
   try {
     /*
-     {
+
+  restaurants = [{
       name: 'Ramen House',
-      rating: 8,
-      cuisine: 'Japanese',
-      hours: '11 am - 8 pm, 7 days/wk',
-      preview: 'Lorem ipsum...',
-      id: 1,
+      rating: 4,
+      is_favorite: false;
+      preview: 'Show details',
+      googlePlaceId: 'ChIJ15FZYD_2rIkRfnqJkRlmNzI'
     },
+    {
+      name: 'Ramen House',
+      rating: 2,
+      is_favorite: false;
+      preview: 'Show details',
+      googlePlaceId: 'ChIJl3ZTXIr3rIkR5R45ePwPzL4'
+    }];
     */
     const { restaurant_id } = req.body;
-    const userID = req.cookies.userID;
+    const user_id = req.cookies.userID;
     const userReviews = await db.query(
       `SELECT r.googleplace_id, r.yelp_id, u._id, u.name, ra.* from restaurant r
-      RIGHT OUTER JOIN users u ON r.user_id = '${userID}'
-      RIGHT OUTER JOIN rating ra ON ra.user_id = '${userID}'
+      RIGHT OUTER JOIN users u ON r.user_id = '${user_id}'
+      RIGHT OUTER JOIN rating ra ON ra.user_id = '${user_id}'
       `
     );
   } catch (error) {
@@ -45,7 +52,7 @@ collectionsController.getRatings = async (req, res, next) => {
       `SELECT r.* FROM rating r
       JOIN users u ON r.user_id = u._id
       JOIN restaurant rest ON r.rest_id = rest._id
-      WHERE r.user_id = '${userID}'
+      WHERE r.user_id = '${user_id}'
       AND r.rest_id = '${restaurant_id}'
       AND rest.is_reviewed = true`
     );
@@ -60,9 +67,31 @@ collectionsController.getRatings = async (req, res, next) => {
   }
 };
 
+collectionsController.getReviews = async (req, res, next) => {
+  try {
+    const { restaurant_id, googleplace_id } = req.body;
+    const user_id = req.cookies.userID;
+    const reviews = await db.query(
+      `SELECT r.* FROM rating r
+      JOIN users u ON r.user_id = u._id
+      JOIN restaurant rest ON r.rest_id = rest._id
+      WHERE r.rest_id = '${restaurant_id}'
+      AND rest.googleplace_id = '${googleplace_id}'
+      AND u._id = '${user_id}'
+      AND rest.is_reviewed = true`
+    );
+  } catch (error) {
+    return next({
+      log: 'collectionsController.getReviews() ERROR',
+      status: 400,
+      message: { err: `in collectionsController.getReviews: ${error}` },
+    });
+  }
+};
+
 collectionsController.getFavorites = async (req, res, next) => {
   try {
-    const { user_id } = req.body;
+    const user_id = req.cookies.userID;
     const userFavorites = await db.query(
       `SELECT r.* FROM restaurant r
       JOIN users u ON r.user_id = u._id
@@ -79,7 +108,7 @@ collectionsController.getFavorites = async (req, res, next) => {
 
 collectionsController.getWishlist = async (req, res, next) => {
   try {
-    const { user_id } = req.body;
+    const user_id = req.cookies.userID;
     const userWishlist = await db.query(
       `SELECT *
       FROM users u
@@ -95,14 +124,15 @@ collectionsController.getWishlist = async (req, res, next) => {
   }
 };
 
-// need to edit
 collectionsController.addToFavorites = async (req, res, next) => {
   try {
     const { restaurant_id } = req.body;
+    const user_id = req.cookies.userID;
     await db.query(
       `UPDATE restaurant
       SET is_favorite = true
-      WHERE _id = '${restaurant_id}'`
+      WHERE _id = '${restaurant_id}'
+      AND user_id = '${user_id}'`
     );
     return next();
   } catch (error) {
@@ -114,14 +144,15 @@ collectionsController.addToFavorites = async (req, res, next) => {
   }
 };
 
-//need to edit
 collectionsController.addToWishlist = async (req, res, next) => {
   try {
     const { restaurant_id } = req.body;
+    const user_id = req.cookies.userID;
     await db.query(
       `UPDATE restaurant
       SET is_wishlist = true
-      WHERE _id = '${restaurant_id}'`
+      WHERE _id = '${restaurant_id}'
+      AND user_id = '${user_id}'`
     );
     return next();
   } catch (error) {
@@ -135,8 +166,6 @@ collectionsController.addToWishlist = async (req, res, next) => {
 
 // Complete addToReviews
 collectionsController.addToReviews = async (req, res, next) => {
-  // add restaurant
-
   try {
     const {
       date_updated,
@@ -148,7 +177,7 @@ collectionsController.addToReviews = async (req, res, next) => {
       notes,
       rest_id,
     } = req.body;
-    const user_id = req.cookies.userID;
+    const user_id = req.cookies.user_id;
 
     const query = await db.query(
       `INSERT INTO rating (user_id, date_updated, overall_score, service_score, food_score, atmosphere_score, price_score, notes, rest_id)
@@ -161,6 +190,48 @@ collectionsController.addToReviews = async (req, res, next) => {
       log: 'collectionsController.addToReviews() ERROR',
       status: 400,
       message: { err: `in collectionsController.addToReviews: ${error}` },
+    });
+  }
+};
+
+collectionsController.removeFromFavorites = async (req, res, next) => {
+  try {
+    const { restaurant_id } = req.body;
+    const user_id = req.cookies.userID;
+    await db.query(
+      `UPDATE restaurant
+      SET is_favorite = false
+      WHERE _id = '${restaurant_id}'
+      AND user_id = '${user_id}'`
+    );
+    return next();
+  } catch (error) {
+    return next({
+      log: 'collectionsController.removeFromFavorites() ERROR',
+      status: 400,
+      message: {
+        err: `in collectionsController.removeFromFavorites: ${error}`,
+      },
+    });
+  }
+};
+
+collectionsController.removeFromWishlist = async (req, res, next) => {
+  try {
+    const { restaurant_id } = req.body;
+    const user_id = req.cookies.userID;
+    await db.query(
+      `UPDATE restaurant
+      SET is_wishlist = false
+      WHERE _id = '${restaurant_id}'
+      AND user_id = '${user_id}'`
+    );
+    return next();
+  } catch (error) {
+    return next({
+      log: 'collectionsController.addToWishlist() ERROR',
+      status: 400,
+      message: { err: `in collectionsController.addToWishlist: ${error}` },
     });
   }
 };
