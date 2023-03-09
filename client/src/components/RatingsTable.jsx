@@ -15,7 +15,7 @@ const RatingsTable = props => {
             Overall:
           </td>
           <td className="stars">
-            <RatingStars key={1} />
+            <RatingStars starsLabel="overall" key={1} onChange={props.onChange} />
           </td>
         </tr>
         {/* ROW 2 */}
@@ -24,7 +24,7 @@ const RatingsTable = props => {
             Food:
           </td>
           <td className="stars">
-            <RatingStars key={2} />
+            <RatingStars starsLabel="food" key={2} onChange={props.onChange} />
           </td>
         </tr>
         {/* ROW 3 */}
@@ -33,7 +33,7 @@ const RatingsTable = props => {
             Price:
           </td>
           <td className="stars">
-            <RatingStars key={3} />
+            <RatingStars starsLabel="price" key={3} onChange={props.onChange} />
           </td>
         </tr>
         {/* ROW 4 */}
@@ -42,7 +42,7 @@ const RatingsTable = props => {
             Service:
           </td>
           <td className="stars">
-            <RatingStars key={4} />
+            <RatingStars starsLabel="service" key={4} onChange={props.onChange} />
           </td>
         </tr>
         {/* ROW 5 */}
@@ -51,7 +51,7 @@ const RatingsTable = props => {
             Atmosphere:
           </td>
           <td className="stars">
-            <RatingStars key={5} />
+            <RatingStars starsLabel="atmosphere" key={5} onChange={props.onChange} />
           </td>
         </tr>
       </tbody>
@@ -62,17 +62,16 @@ const RatingsTable = props => {
 const RatingStars = props => {
   const [numFilledStars, setNumFilledStars] = useState(0);
 
-  const onStarClick = (starId) => {
-    /*
-    NOTE: It seems like the "hit" box of the star doesn't line up with the star
-    Seems like it's to the left of the starl... not sure why??
-    */
+  const onStarClick = (e) => {
+    const starId = e.target.id
     if (starId.length) {
       const starNum = Number(starId.split('star')[1]);
       setNumFilledStars(starNum);
     } else {
       console.log('empty id');
     }
+
+    props.onChange(e)
   };
 
   const stars = [];
@@ -92,8 +91,9 @@ const RatingStars = props => {
       >
         <div
           className="star-overlay"
-          id={`star${i}`}
-          onClick={(event) => onStarClick(event.target.id)}>
+          id={`${props.starsLabel}-star${i}`}
+          onClick={(e) => onStarClick(e)}
+        >
         </div>
         <FontAwesomeIcon
           icon={starIcon}
@@ -102,8 +102,6 @@ const RatingStars = props => {
       </span>
     );
   }
-
-  console.log(stars);
 
   return (
     <span id="rating-stars">
