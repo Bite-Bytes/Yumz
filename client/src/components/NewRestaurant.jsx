@@ -7,6 +7,8 @@ import detailStyles from '../stylesheets/details-modal.css';
 import RatingNotes from './RatingNotes.jsx';
 import helperFns from '../helperFns.js';
 import { useNavigate } from 'react-router-dom';
+import CollectionList from './CollectionList.jsx';
+import DetailsModal from './DetailsModal.jsx';
 
 const NewRestaurant = props => {
 
