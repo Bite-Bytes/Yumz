@@ -18,12 +18,16 @@ cookieController.setJWTCookie = async (req, res, next) => {
     const { email } = req.body;
 
     const jwtToken = createJWT(email);
+
     res.locals.JWT = jwtToken;
     res.cookie('JWT', jwtToken, {
       httpOnly: true,
     });
+    res.cookie('userID', res.locals.userID, {
+      httpOnly: true,
+    });
     console.log(`Creating JWT for user: ${email}`);
-    return next();
+    res.json({ message: 'Successful login' });
   } catch (error) {
     return next({
       log: 'error running cookieController.setJWTCookie middleware.',

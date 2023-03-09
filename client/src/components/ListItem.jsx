@@ -30,7 +30,7 @@ const ListItem = (props) => {
       const response = await fetch(requestUrl);
       const restaurantDetails = await response.json();
 
-      console.log('RESTAURANT DETAILS', restaurantDetails)
+      console.log('RESTAURANT DETAILS', restaurantDetails);
       const newRestaurantInfo = await {};
       newRestaurantInfo['googlePlaceId'] = restaurantDetails.id;
       newRestaurantInfo['name'] = restaurantDetails.name;
@@ -40,13 +40,14 @@ const ListItem = (props) => {
       newRestaurantInfo['delivery'] = restaurantDetails.takeout;
 
       // PASS RESTAURANT NAME AND LATLONG TO BACKEND TO GET BELOW FROM YELP
-      newRestaurantInfo['category'] = 'American (Traditional), Pizza, Pasta Shops';
+      newRestaurantInfo['category'] = restaurantDetails.category;
       newRestaurantInfo['parking'] = 'Private lot parking';
       newRestaurantInfo['menu'] = 'https://www.google.com';
       newRestaurantInfo['dress-code'] = 'Casual';
       newRestaurantInfo['credit-cards'] = true;
 
       setRestaurantInfo(newRestaurantInfo);
+
     } catch (error) {
       // This should be better error handling..
       console.log('ListItem onSearchResultClick error', error.message);

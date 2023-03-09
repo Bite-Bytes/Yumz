@@ -11,65 +11,148 @@ const db = require('../models/userModels.js');
 
 const collectionsController = {};
 
-collectionsController.getReviews = async (req, res, next) => {
+collectionsController.getRatings = async (req, res, next) => {
   try {
-    const { userID } = req.body;
-    const userReviews = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'reviews'`);
+    /*
+     {
+      name: 'Ramen House',
+      rating: 8,
+      cuisine: 'Japanese',
+      hours: '11 am - 8 pm, 7 days/wk',
+      preview: 'Lorem ipsum...',
+      id: 1,
+    },
+    */
+    const { restaurant_id } = req.body;
+    const userID = req.cookies.userID;
+    const userReviews = await db.query(
+      `SELECT r.googleplace_id, r.yelp_id, u._id, u.name, ra.* from restaurant r
+      RIGHT OUTER JOIN users u ON r.user_id = '${userID}'
+      RIGHT OUTER JOIN rating ra ON ra.user_id = '${userID}'
+      `
+    );
+    const userRatings = await db.query(
+      `SELECT r.* FROM rating r
+      JOIN users u ON r.user_id = u._id
+      JOIN restaurant rest ON r.rest_id = rest._id
+      WHERE r.user_id = '${userID}'
+      AND r.rest_id = '${restaurant_id}'
+      AND rest.is_reviewed = true`
+    );
+    res.locals.userRatings = userRatings.rows;
+    return next();
   } catch (error) {
     return next({
-      log: 'an error occurred',
-      message: 'an error occurred'
+      log: 'collectionsController.getRatings() ERROR',
+      status: 400,
+      message: { err: `in collectionsController.getRatings: ${error}` },
     });
   }
 };
 
 collectionsController.getFavorites = async (req, res, next) => {
   try {
-    const { userID } = req.body;
-    const userFavorites = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'favorites'`);
+    const { user_id } = req.body;
+    const userFavorites = await db.query(
+      `SELECT r.* FROM restaurant r
+      JOIN users u ON r.user_id = u._id
+      WHERE r.user_id = '${user_id}' AND r.is_favorite = true`
+    );
   } catch (error) {
     return next({
-      log: 'an error occurred',
-      message: 'an error occurred'
+      log: 'collectionsController.getFavorites() ERROR',
+      status: 400,
+      message: { err: `in collectionsController.getFavorites: ${error}` },
     });
   }
 };
 
 collectionsController.getWishlist = async (req, res, next) => {
   try {
-    const { userID } = req.body;
-    const userWishlist = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'wishlist'`);
-
+    const { user_id } = req.body;
+    const userWishlist = await db.query(
+      `SELECT *
+      FROM users u
+      JOIN restaurant r ON u._id = r.user_id
+      WHERE u._id = '${user_id}' AND r.is_wishlist = true;`
+    );
   } catch (error) {
     return next({
-      log: 'an error occurred',
-      message: 'an error occurred'
+      log: 'collectionsController.getWishlist() ERROR',
+      status: 400,
+      message: { err: `in collectionsController.getWishlist: ${error}` },
     });
   }
 };
 
+// need to edit
 collectionsController.addToFavorites = async (req, res, next) => {
-  const collectionID = req.body.collection_id;
-  const restaurantID = res.locals.restID;
-  await db.query(
-    `INSERT INTO collection_restaurant (collection_id, restaurant_id) 
-    VALUES ('${collectionID}', '${restaurantID}')`
-  );
-  return next();
+  try {
+    const { restaurant_id } = req.body;
+    await db.query(
+      `UPDATE restaurant
+      SET is_favorite = true
+      WHERE _id = '${restaurant_id}'`
+    );
+    return next();
+  } catch (error) {
+    return next({
+      log: 'collectionsController.addToFavorites() ERROR',
+      status: 400,
+      message: { err: `in collectionsController.addToFavorites: ${error}` },
+    });
+  }
 };
 
+//need to edit
 collectionsController.addToWishlist = async (req, res, next) => {
-  const collectionID = req.body.collection_id;
-  const restaurantID = res.locals.restID;
-  await db.query(
-    `INSERT INTO collection_restaurant (collection_id, restaurant_id) 
-    VALUES ('${collectionID}', '${restaurantID}')`
-  );
-  return next();
+  try {
+    const { restaurant_id } = req.body;
+    await db.query(
+      `UPDATE restaurant
+      SET is_wishlist = true
+      WHERE _id = '${restaurant_id}'`
+    );
+    return next();
+  } catch (error) {
+    return next({
+      log: 'collectionsController.addToWishlist() ERROR',
+      status: 400,
+      message: { err: `in collectionsController.addToWishlist: ${error}` },
+    });
+  }
 };
 
+// Complete addToReviews
 collectionsController.addToReviews = async (req, res, next) => {
+  // add restaurant
 
+  try {
+    const {
+      date_updated,
+      overall_score,
+      service_score,
+      food_score,
+      atmosphere_score,
+      price_score,
+      notes,
+      rest_id,
+    } = req.body;
+    const user_id = req.cookies.userID;
+
+    const query = await db.query(
+      `INSERT INTO rating (user_id, date_updated, overall_score, service_score, food_score, atmosphere_score, price_score, notes, rest_id)
+      VALUES ('${user_id}', '${date_updated}', '${overall_score}', '${service_score}', '${food_score}', '${atmosphere_score}', '${price_score}', '${notes}', ${rest_id})`
+    );
+    res.locals.query = query;
+    return next();
+  } catch (error) {
+    return next({
+      log: 'collectionsController.addToReviews() ERROR',
+      status: 400,
+      message: { err: `in collectionsController.addToReviews: ${error}` },
+    });
+  }
 };
 
 module.exports = collectionsController;
@@ -93,4 +176,4 @@ const body = {
       }
     };
 
-*/ 
+*/
