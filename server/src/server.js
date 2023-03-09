@@ -71,18 +71,10 @@ app.post('/addToReviews', collectionsController.addToReviews, (req, res) => {
 });
 
 // removeFromFavorites
-app.post(
-  '/removeFromFavorites',
-  collectionsController.removeFromFavorites,
-  (req, res) => {
-    res.status(200);
-    res.send(res.locals.query);
-  }
-);
 
 // removeFromWishlist
-app.post(
-  '/removeFromWishlist',
+app.patch(
+  '/addToWishlist',
   collectionsController.removeFromWishlist,
   (req, res) => {
     res.status(200);
@@ -90,7 +82,6 @@ app.post(
   }
 );
 
-// Was sending without any data;
 app.get('/reviews', collectionsController.getRatings, (req, res) => {
   res.status(200).send(res.locals.userRatings);
 });
