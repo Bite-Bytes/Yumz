@@ -37,7 +37,7 @@ router.get(
   '/yelp',
   yelpFusionAPIController.getRestaurantDetails,
   (req, res) => {
-    res.json(res.locals.restaurantDetailsResults);
+    res.json(res.locals.yelpCategories);
   }
 );
 module.exports = router;
