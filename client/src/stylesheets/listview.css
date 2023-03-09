@@ -48,7 +48,8 @@
   font-family: 'Fredoka One', sans-serif;
 }
 
-.fav-button {
+.fav-button,
+.wish-button {
   border: none;
 }
 
