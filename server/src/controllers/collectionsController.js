@@ -10,8 +10,7 @@ const db = require('../models/userModels.js');
 // };
 
 const collectionsController = {};
-
-collectionsController.getRatings = async (req, res, next) => {
+collectionsController.getReviews = async (req, res, next) => {
   try {
     /*
      {
@@ -31,6 +30,17 @@ collectionsController.getRatings = async (req, res, next) => {
       RIGHT OUTER JOIN rating ra ON ra.user_id = '${userID}'
       `
     );
+  } catch (error) {
+    return next({
+      log: 'error running collectionsController.getReviews middleware.',
+      status: 400,
+      message: { err: error },
+    });
+  }
+};
+
+collectionsController.getRatings = async (req, res, next) => {
+  try {
     const userRatings = await db.query(
       `SELECT r.* FROM rating r
       JOIN users u ON r.user_id = u._id
