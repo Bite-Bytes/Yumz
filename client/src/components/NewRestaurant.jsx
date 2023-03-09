@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import CollectionList from './CollectionList.jsx';
 import DetailsModal from './DetailsModal.jsx';
 
-const NewRestaurant = props => {
+const NewRestaurant = (props) => {
   const [restaurantInfo, setRestaurantInfo] = useState(null);
   const [searchResults, setSearchResults] = useState({});
 
@@ -20,9 +20,9 @@ const NewRestaurant = props => {
 
   // Define the options for the Autocomplete instance, including the country restriction, fields to return, and types of results to search for
   const options = {
-    componentRestrictions: { country: "us" },
-    fields: ["address_components", "geometry", "icon", "name"],
-    types: ["establishment"]
+    componentRestrictions: { country: 'us' },
+    fields: ['address_components', 'geometry', 'icon', 'name'],
+    types: ['establishment'],
   };
 
   // Use the useEffect hook to initialize the Autocomplete instance when the component mounts
@@ -48,7 +48,9 @@ const NewRestaurant = props => {
         return;
       }
 
-      const locationInput = document.querySelector('#restaurant-location-input');
+      const locationInput = document.querySelector(
+        '#restaurant-location-input'
+      );
       const locationVal = locationInput.value;
 
       let requestUrl = `/api/search?query=${restaurantName}`;
@@ -59,8 +61,12 @@ const NewRestaurant = props => {
       // - For an empty string, Google Places API will default to user's location (based on IP address of req?)
       if (locationVal === 'Current Location') {
         const userCoords = helperFns.retrieveUserCoords();
-        const latitude = Object.hasOwn(userCoords, 'latitude') ? userCoords.latitude : null;
-        const longitude = Object.hasOwn(userCoords, 'longitude') ? userCoords.longitude : null;
+        const latitude = Object.hasOwn(userCoords, 'latitude')
+          ? userCoords.latitude
+          : null;
+        const longitude = Object.hasOwn(userCoords, 'longitude')
+          ? userCoords.longitude
+          : null;
 
         if (latitude && longitude) {
           requestUrl += `&latitude=${latitude}&longitude=${longitude}`;
@@ -69,19 +75,25 @@ const NewRestaurant = props => {
         requestUrl += ` near ${locationVal}`;
       }
       // TODO - not handling scenario where no search results come back..
-      console.log('submitRestaurantName, searching for restaurant name:', restaurantName,
-        'location val: ', locationVal);
+      console.log(
+        'submitRestaurantName, searching for restaurant name:',
+        restaurantName,
+        'location val: ',
+        locationVal
+      );
 
       console.log('NewRestaurant sending request to ', requestUrl);
       const response = await fetch(requestUrl);
       const jsonSearchResults = await response.json();
 
       const newSearchResults = {};
-      for (const [googlePlaceId, googlePlaceInfo] of Object.entries(jsonSearchResults.results)) {
+      for (const [googlePlaceId, googlePlaceInfo] of Object.entries(
+        jsonSearchResults.results
+      )) {
         newSearchResults[googlePlaceId] = {
-          'googlePlaceId': googlePlaceId,
-          'name': googlePlaceInfo.name,
-          'address': googlePlaceInfo.address
+          googlePlaceId: googlePlaceId,
+          name: googlePlaceInfo.name,
+          address: googlePlaceInfo.address,
         };
       }
 
@@ -107,7 +119,8 @@ const NewRestaurant = props => {
       newRestaurantInfo['googlePlaceId'] = restaurantDetails.id;
       newRestaurantInfo['name'] = restaurantDetails.name;
       newRestaurantInfo['address'] = restaurantDetails.address;
-      newRestaurantInfo['category'] = 'American (Traditional), Pizza, Pasta Shops';
+      newRestaurantInfo['category'] =
+        'American (Traditional), Pizza, Pasta Shops';
       newRestaurantInfo['parking'] = 'Private lot parking';
       newRestaurantInfo['hours'] = restaurantDetails.hours;
       newRestaurantInfo['menu'] = 'https://www.google.com';
@@ -124,9 +137,8 @@ const NewRestaurant = props => {
     }
   };
 
-  const onFinishBtnClick = () => {
-    console.log('Finish button clicked');
-    // TO DO - post request to /restaurant
+  const onFinishBtnClick = async () => {
+    navigate('/reviews');
   };
 
   const onReturnSearchBtnClick = () => {
@@ -134,7 +146,9 @@ const NewRestaurant = props => {
   };
 
   const searchResultItems = [];
-  for (const [googlePlaceId, googlePlaceInfo] of Object.entries(searchResults)) {
+  for (const [googlePlaceId, googlePlaceInfo] of Object.entries(
+    searchResults
+  )) {
     searchResultItems.push(
       <RestaurantSearchResult
         name={googlePlaceInfo.name}
@@ -150,7 +164,10 @@ const NewRestaurant = props => {
     // VIEW SEARCH RESULTS
     // console.log(searchResults)
     return (
-      <CollectionList listName={'Search Results'} searchResults={searchResults} />
+      <CollectionList
+        listName={'Search Results'}
+        searchResults={searchResults}
+      />
       // <div id='new-restaurant-info'>
       //   <div id='new-restaurant-header'>Search Results</div>
       //   <button
@@ -168,7 +185,9 @@ const NewRestaurant = props => {
     return (
       <div id='new-restaurant-info'>
         <div id='new-restaurant-header'>Add a Restaurant</div>
-        <div className='new-restaurant-prompt'>What is the name of the restaurant?</div>
+        <div className='new-restaurant-prompt'>
+          What is the name of the restaurant?
+        </div>
         <form
           onSubmit={(event) => submitRestaurantName(event)}
           autoComplete='off'>
@@ -177,22 +196,28 @@ const NewRestaurant = props => {
             name='restaurant-name-input'
             className='new-restaurant-input'
             type='text'
-            ref={inputRef} /><br />
-          <label className='new-restaurant-prompt'
+            ref={inputRef}
+          />
+          <br />
+          <label
+            className='new-restaurant-prompt'
             htmlFor='restaurant-location-input'>
             Add a location to search in?
-          </label><br />
+          </label>
+          <br />
           <input
             id='restaurant-location-input'
             name='restaurant-location-input'
             className='new-restaurant-input'
             type='text'
-            list='location-options' />
+            list='location-options'
+          />
           <datalist id='location-options'>
             <option value='Current Location' />
           </datalist>
           <br />
-          <input type='submit'
+          <input
+            type='submit'
             value='Next'
             className='new-restaurant-button'></input>
         </form>
