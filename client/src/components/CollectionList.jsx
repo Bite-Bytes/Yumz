@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 import '../stylesheets/listview.css';
 import ListItem from './ListItem.jsx';
 
-const CollectionList = async (props) => {
+const CollectionList = (props) => {
   let restaurants;
   let response;
   if (props.listName === 'Reviews') {
@@ -46,16 +46,18 @@ const CollectionList = async (props) => {
       is_favorite: true,
       googlePlaceId: 'ChIJl3ZTXIr3rIkR5R45ePwPzL4'
     }];
-  } else if (props.listName === 'Reviews') {
-    response = await fetch('/api/reviews')
-    restaurants = await response.json()
-  } else if (props.listName === 'Wishlist') {
-    response = await fetch('/api/wishlist')
-    restaurants = await response.json()
-  } else if (props.listName === 'Favorites') {
-    response = await fetch('/api/favorites')
-    restaurants = await response.json()
   }
+
+  // else if (props.listName === 'Reviews') {
+  //   response = await fetch('/api/reviews')
+  //   restaurants = await response.json()
+  // } else if (props.listName === 'Wishlist') {
+  //   response = await fetch('/api/wishlist')
+  //   restaurants = await response.json()
+  // } else if (props.listName === 'Favorites') {
+  //   response = await fetch('/api/favorites')
+  //   restaurants = await response.json()
+  // }
 
   return (
     <div className="listview" >
