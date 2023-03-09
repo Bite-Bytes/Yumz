@@ -22,6 +22,9 @@ cookieController.setJWTCookie = async (req, res, next) => {
     res.cookie('JWT', jwtToken, {
       httpOnly: true,
     });
+    res.cookie('userID', res.locals.userID, {
+      httpOnly: true,
+    });
     console.log(`Creating JWT for user: ${email}`);
     return next();
   } catch (error) {
