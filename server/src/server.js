@@ -71,8 +71,23 @@ app.post('/addToReviews', collectionsController.addToReviews, (req, res) => {
 });
 
 // removeFromFavorites
-
+app.post(
+  '/removeFromFavorites',
+  collectionsController.removeFromFavorites,
+  (req, res) => {
+    res.status(200);
+    res.send(res.locals.query);
+  }
+);
 // removeFromWishlist
+app.post(
+  '/removeFromWishlist',
+  collectionsController.removeFromWishlist,
+  (req, res) => {
+    res.status(200);
+    res.send(res.locals.query);
+  }
+);
 
 // Was sending without any data;
 app.get('/reviews', collectionsController.getRatings, (req, res) => {

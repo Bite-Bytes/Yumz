@@ -85,14 +85,14 @@ collectionsController.getWishlist = async (req, res, next) => {
   }
 };
 
-// need to edit
 collectionsController.addToFavorites = async (req, res, next) => {
   try {
-    const { restaurant_id } = req.body;
+    const { restaurant_id, user_id } = req.body;
     await db.query(
       `UPDATE restaurant
       SET is_favorite = true
-      WHERE _id = '${restaurant_id}'`
+      WHERE _id = '${restaurant_id}'
+      AND user_id = '${user_id}'`
     );
     return next();
   } catch (error) {
@@ -104,14 +104,14 @@ collectionsController.addToFavorites = async (req, res, next) => {
   }
 };
 
-//need to edit
 collectionsController.addToWishlist = async (req, res, next) => {
   try {
-    const { restaurant_id } = req.body;
+    const { restaurant_id, user_id } = req.body;
     await db.query(
       `UPDATE restaurant
       SET is_wishlist = true
-      WHERE _id = '${restaurant_id}'`
+      WHERE _id = '${restaurant_id}'
+      AND user_id = '${user_id}'`
     );
     return next();
   } catch (error) {
@@ -125,8 +125,6 @@ collectionsController.addToWishlist = async (req, res, next) => {
 
 // Complete addToReviews
 collectionsController.addToReviews = async (req, res, next) => {
-  // add restaurant
-
   try {
     const {
       date_updated,
@@ -151,6 +149,46 @@ collectionsController.addToReviews = async (req, res, next) => {
       log: 'collectionsController.addToReviews() ERROR',
       status: 400,
       message: { err: `in collectionsController.addToReviews: ${error}` },
+    });
+  }
+};
+
+collectionsController.removeFromFavorites = async (req, res, next) => {
+  try {
+    const { restaurant_id, user_id } = req.body;
+    await db.query(
+      `UPDATE restaurant
+      SET is_favorite = false
+      WHERE _id = '${restaurant_id}'
+      AND user_id = '${user_id}'`
+    );
+    return next();
+  } catch (error) {
+    return next({
+      log: 'collectionsController.removeFromFavorites() ERROR',
+      status: 400,
+      message: {
+        err: `in collectionsController.removeFromFavorites: ${error}`,
+      },
+    });
+  }
+};
+
+collectionsController.removeFromWishlist = async (req, res, next) => {
+  try {
+    const { restaurant_id, user_id } = req.body;
+    await db.query(
+      `UPDATE restaurant
+      SET is_wishlist = false
+      WHERE _id = '${restaurant_id}'
+      AND user_id = '${user_id}'`
+    );
+    return next();
+  } catch (error) {
+    return next({
+      log: 'collectionsController.addToWishlist() ERROR',
+      status: 400,
+      message: { err: `in collectionsController.addToWishlist: ${error}` },
     });
   }
 };
