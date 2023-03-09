@@ -73,8 +73,15 @@ app.post('/addToReviews', collectionsController.addToReviews, (req, res) => {
 // removeFromFavorites
 
 // removeFromWishlist
+app.patch(
+  '/addToWishlist',
+  collectionsController.removeFromWishlist,
+  (req, res) => {
+    res.status(200);
+    res.send(res.locals.query);
+  }
+);
 
-// Was sending without any data;
 app.get('/reviews', collectionsController.getRatings, (req, res) => {
   res.status(200).send(res.locals.userRatings);
 });
