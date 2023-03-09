@@ -27,7 +27,7 @@ cookieController.setJWTCookie = async (req, res, next) => {
       httpOnly: true,
     });
     console.log(`Creating JWT for user: ${email}`);
-    return next();
+    res.json({ message: 'Successful login' });
   } catch (error) {
     return next({
       log: 'error running cookieController.setJWTCookie middleware.',

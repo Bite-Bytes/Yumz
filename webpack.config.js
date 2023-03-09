@@ -6,15 +6,23 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, '/client/dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   devServer: {
     static: {
       directory: path.join(__dirname, '/client/dist'),
-      publicPath: '/'
+      publicPath: '/',
     },
     proxy: {
       '/api': {
+        target: 'http://localhost:3000/',
+        secure: false,
+      },
+      '/login': {
+        target: 'http://localhost:3000/',
+        secure: false,
+      },
+      '/signup': {
         target: 'http://localhost:3000/',
         secure: false,
       },
@@ -24,8 +32,8 @@ module.exports = {
   },
   plugins: [
     new HTMLWebpackPlugin({
-      template: './client/src/index.html'
-    })
+      template: './client/src/index.html',
+    }),
   ],
 
   module: {
@@ -36,12 +44,9 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-react'
-            ]
-          }
-        }
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          },
+        },
       },
       {
         test: /\.(css|scss)$/,
@@ -55,7 +60,7 @@ module.exports = {
             loader: 'file-loader',
           },
         ],
-      }
-    ]
-  }
+      },
+    ],
+  },
 };

@@ -16,15 +16,7 @@ const createError = (errorInfo) => {
 };
 
 const yelpFusionAPIController = {};
-// cbmGkMfR2srqTxV9GHeH1Q
-console.log(
-  'https://api.yelp.com/v3/businesses/search?' +
-    new URLSearchParams({
-      term: 'test',
-      latitude: 'lat',
-      longitude: 'long',
-    })
-);
+
 yelpFusionAPIController.getRestaurantDetails = async (req, res, next) => {
   try {
     console.log('In yelpFusionAPIController.getRestaurantDetails');

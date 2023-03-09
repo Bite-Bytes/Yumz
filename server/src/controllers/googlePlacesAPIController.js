@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
+const YELP_FUSION_API_KEY = process.env.YELP_FUSION_API_KEY;
 
 const createError = (errorInfo) => {
   const { method, type, error } = errorInfo;
@@ -165,6 +166,32 @@ googlePlacesAPIController.getPlaceDetails = async (req, res, next) => {
     res.locals.latitude = placeDetailsResults.geometry.location.lat;
     res.locals.longitude = placeDetailsResults.geometry.location.lng;
     res.locals.placeDetailsResults = sortedPlaceDetails;
+    console.log('hi');
+    const restaurantDetailsResponse = await fetch(
+      'https://api.yelp.com/v3/businesses/search?' +
+        new URLSearchParams({
+          term: res.locals.name,
+          latitude: res.locals.latitude,
+          longitude: res.locals.longitude,
+        }),
+      {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + YELP_FUSION_API_KEY,
+          accept: 'application/json',
+        },
+      }
+    );
+
+    const restaurantDetailsResult = await restaurantDetailsResponse.json();
+    const categories = restaurantDetailsResult.businesses[0].categories;
+    const returnedCategories = { category: '' };
+    for (let i = 0; i < categories.length; i++) {
+      if (i === categories.length - 1)
+        returnedCategories.category += `${categories[i].title}`;
+      else returnedCategories.category += `${categories[i].title} `;
+    }
+    res.locals.placeDetailsResults.category = returnedCategories.category;
     return res.json(res.locals.placeDetailsResults);
   } catch (error) {
     return next(

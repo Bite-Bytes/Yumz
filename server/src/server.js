@@ -67,7 +67,7 @@ app.post(
 // addToReviews was empty
 app.post('/addToReviews', collectionsController.addToReviews, (req, res) => {
   res.status(200);
-  res.send(res.locals);
+  res.send(res.locals.query);
 });
 
 // removeFromFavorites
