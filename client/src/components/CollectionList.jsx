@@ -7,7 +7,7 @@ const CollectionList = (props) => {
   if (props.listName === 'Reviews') {
     restaurants = [{
       name: 'Ramen House',
-      rating: 8,
+      rating: 4,
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
       preview: 'See details',
@@ -15,7 +15,7 @@ const CollectionList = (props) => {
     },
     {
       name: 'Ramen place',
-      rating: 8,
+      rating: 2,
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
       preview: 'See details',
@@ -28,7 +28,7 @@ const CollectionList = (props) => {
   else {
     restaurants = [{
       name: 'Ramen House',
-      rating: 8,
+      rating: 5,
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
       preview: 'See details',
@@ -39,10 +39,11 @@ const CollectionList = (props) => {
   return (
     <div className="listview" >
       <div className="collectionTitle">{props.listName}</div>
-      {restaurants.map((listing) => ( //each restautant in array, return a listitem
-        <ListItem listing={listing} key={listing.id} />
-      ))}
-
+      <div className="list-items">
+        {restaurants.map((listing) => ( //each restautant in array, return a listitem
+          <ListItem listing={listing} key={listing.id} />
+        ))}
+      </div>
     </div>
 
   );

@@ -76,6 +76,7 @@ const NewRestaurant = props => {
       const response = await fetch(requestUrl);
       const jsonSearchResults = await response.json();
 
+      console.log('SEARCH RESULTS', jsonSearchResults.results)
       const newSearchResults = {};
       for (const [googlePlaceId, googlePlaceInfo] of Object.entries(jsonSearchResults.results)) {
         newSearchResults[googlePlaceId] = {

@@ -1,34 +1,42 @@
-body {
-  background-color: #FCF9E8;
-}
-.listview {
-  margin: 10px;
-  font-size: 1em;
-}
 .preview {
   padding: 3px;
-  margin: 5px;
   background-color: #f3ebff;
   border: 3px solid #aa8cd7;
   border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 50rem;
+  align-items: center;
 }
+
+.close-button {
+  position: absolute;
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .item {
-  padding: 3px 6px 3px 6px;
+  padding: 3px 6px;
   color: #474747;
-  font-family: 'Fredoka One', cursive;
-  display: inline-block;
-  text-align: center;
-  /* border-left: 1px solid black; */
-  border-right: 1px solid black;
+  font-family: 'Fredoka One', sans-serif;
+  /* text-align: center; */
+  /* border-right: 1px solid black; */
 }
 
 .collectionTitle {
   padding: 10px;
   margin: 10px;
-  font: 3em;
+  font-size: 2em;
   color: #474747;
-  text-align:center;
-  font-family: 'Fredoka One', cursive;
+  text-align: center;
+  font-family: 'Fredoka One', sans-serif;
   /* border: 5px solid #aa8cd7; */
 }
 
@@ -37,21 +45,48 @@ body {
   background-color: #f3ebff;
   color: #474747;
   font-size: 1em;
-  font-family: 'Fredoka One', cursive;
+  font-family: 'Fredoka One', sans-serif;
 }
 
 #name {
-  width: 150px;
+  display: inline-block;
+  /* width: 150px; */
+  white-space: nowrap;
+  /* flex-grow: 2; */
 }
 
-#stars {
+#address {
+  font-size: 12px;
+}
+
+/* #name:not(:hover) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+} */
+
+/* #name:hover {
+  display: inline-block;
+  animation: scroll-text 5s ease 0s 2 normal;
+}
+
+@keyframes scroll-text {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+} */
+
+/* #stars {
   width: 30px;
 }
 
-#cuisine{
+#cuisine {
   width: 100px;
 }
 
-#hours{
+#hours {
   width: 200px;
-}
+} */

@@ -35,6 +35,40 @@ const RestaurantInfo = props => {
   } else {
     hoursStr = 'N/A';
   }
+
+  // const hoursPerDay = {};
+  // const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  // if (Array.isArray(props.info.hours)) {
+  //   props.info.hours.forEach((day) => {
+  //     hoursPerDay[day.split(':')[0]] = day.slice(day.indexOf(':') + 2);
+  //   })
+  // }
+
+  // hoursStr = '';
+  // let currHrs = '';
+  // let startDay;
+  // let countDays = 0;
+  // days.forEach((day, i) => {
+  //   if (currHrs === '') {
+  //     currHrs = hoursPerDay[day];
+  //     startDay = day;
+  //     countDays++;
+  //   } else if (currHrs === hoursPerDay[day]) {
+  //     countDays++
+  //   } else {
+  //     if (countDays === 1) hoursStr += `${startDay}: ${currHrs}`
+  //     else {
+  //       hoursStr += `${startDay}-${days[i - 1]}: ${currHrs}`
+  //     }
+
+  //     currHrs = hoursPerDay[day];
+  //     startDay = day;
+  //     countDays = 1;
+  //   }
+  // })
+
+  // console.log(hoursPerDay);
+
   mainDetails.push(
     <Detail
       iconName={faClock}
@@ -89,14 +123,11 @@ const RestaurantInfo = props => {
       key={9}
     />;
   return (
-    <>
-      <div className="section-header">
-        <span>Info</span>
-      </div>
+    <div className="section-header">
+      <span className="section-title">Details</span>
       {mainDetails}
       <DetailsTable details={details} />
-    </>
-
+    </div>
   );
 };
 

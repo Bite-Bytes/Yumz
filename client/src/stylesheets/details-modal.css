@@ -1,3 +1,8 @@
+body {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 a {
   text-decoration: none;
   color: #522952;
@@ -28,36 +33,37 @@ td {
 
 .section-header {
   width: 99%;
-  border-bottom: 2px solid #884488;
-  line-height: 0.1em;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
 }
 
 .section-header span {
-  background: #F4E8F4;
+  background-color: #f8f4f8;
   padding-left: 1.5rem;
-  padding-right: 1rem;
+  /* padding-right: 1rem; */
   letter-spacing: .1rem;
   font-weight: 500;
   font-size: 1.5rem;
   color: #884488;
-  border-right: none;
+
 }
 
-#closeBtn {
-  position: absolute;
-  right: 1rem;
-  font-family: 'League Spartan', sans-serif;
-  font-weight: 700;
-  cursor: pointer;
+.section-title {
+  display: inline-block;
+  width: 96%;
+  margin-left: 1%;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #884488;
 }
 
 #details-modal {
-  background-color: #F4E8F4;
+  background-color: #f8f4f8;
   color: #522952;
   font-family: 'League Spartan', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1rem;
+  width: 50rem;
+  margin-left: 6px;
+  padding-top: 30px;
 }
 
 #rating-notes {
@@ -68,7 +74,7 @@ td {
 }
 
 #restaurant-name {
-  font-family: 'Fredoka One', cursive;
+  font-family: 'Fredoka One', sans-serif;
   letter-spacing: .3rem;
   text-align: center;
   font-size: 2.5rem;
