@@ -185,6 +185,7 @@ googlePlacesAPIController.getPlaceDetails = async (req, res, next) => {
 
     const restaurantDetailsResult = await restaurantDetailsResponse.json();
     const categories = restaurantDetailsResult.businesses[0].categories;
+    const yelpID = restaurantDetailsResult.businesses[0].id;
     const returnedCategories = { category: '' };
     for (let i = 0; i < categories.length; i++) {
       if (i === categories.length - 1)
@@ -192,6 +193,8 @@ googlePlacesAPIController.getPlaceDetails = async (req, res, next) => {
       else returnedCategories.category += `${categories[i].title} `;
     }
     res.locals.placeDetailsResults.category = returnedCategories.category;
+    res.locals.placeDetailsResults.yelp_id = yelpID;
+
     return res.json(res.locals.placeDetailsResults);
   } catch (error) {
     return next(
