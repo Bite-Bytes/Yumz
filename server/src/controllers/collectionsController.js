@@ -13,14 +13,29 @@ const collectionsController = {};
 
 collectionsController.getRatings = async (req, res, next) => {
   try {
+    /*
+     {
+      name: 'Ramen House',
+      rating: 8,
+      cuisine: 'Japanese',
+      hours: '11 am - 8 pm, 7 days/wk',
+      preview: 'Lorem ipsum...',
+      id: 1,
+    },
+    */
     const { restaurant_id } = req.body;
     const userID = req.cookies.userID;
-    const userReviews = await db.query(`SELECT `);
+    const userReviews = await db.query(
+      `SELECT r.googleplace_id, r.yelp_id, u._id, u.name, ra.* from restaurant r
+      RIGHT OUTER JOIN users u ON r.user_id = '${userID}'
+      RIGHT OUTER JOIN rating ra ON ra.user_id = '${userID}'
+      `
+    );
     const userRatings = await db.query(
       `SELECT r.* FROM rating r
       JOIN users u ON r.user_id = u._id
       JOIN restaurant rest ON r.rest_id = rest._id
-      WHERE r.user_id = '${user_id}'
+      WHERE r.user_id = '${userID}'
       AND r.rest_id = '${restaurant_id}'
       AND rest.is_reviewed = true`
     );
