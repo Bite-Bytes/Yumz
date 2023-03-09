@@ -20,20 +20,10 @@ const NewRestaurant = (props) => {
 const autoCompleteRef = useRef();
 const inputRef = useRef();
 
-// Create a bounding box with sides 10km away from the center point at each cardinal
-const defaultBounds = {
-  north: 37.8324,
-  south: 37.5209,
-  east: -121.8300,
-  west: -122.5137,
-};
-
 // Define the options for the Autocomplete class
 const options = {
-  bounds: defaultBounds, // set the bounds to the bounding box
   componentRestrictions: { country: "us" }, // restrict the search to the US
   fields: ["address_components", "geometry", "icon", "name"], // specify what fields to return
-  strictBounds: false, // don't restrict the search to the bounding box
   types: ["establishment"], // only return businesses
 };
 
@@ -47,35 +37,56 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
+  // set the default bounds
+  const defaultBounds = {
+    north: 37.8324,
+    south: 37.5209,
+    east: -121.8300,
+    west: -122.5137,
+  };
+
   let center = { lat: 37.7749, lng: -122.4194 }; // default to SF
   if (searchLocation) { // if searchLocation is set, use it as the center point
     center = { lat: searchLocation.lat(), lng: searchLocation.lng() };
   }
 
-  // Create a new bounding box with sides 10km away from the center point
-  const defaultBounds = {
-    north: center.lat + 0.1,
-    south: center.lat - 0.1,
-    east: center.lng + 0.1,
-    west: center.lng - 0.1,
-  };
+  if (searchLocation) { // if searchLocation is set, update the bounds and options
+    // Create a new bounding box with sides 10km away from the center point
+    const updatedBounds = {
+      north: center.lat + 0.1,
+      south: center.lat - 0.1,
+      east: center.lng + 0.1,
+      west: center.lng - 0.1,
+    };
 
-  // Define the updated options for the Autocomplete instance
-  const updatedOptions = {
-    bounds: defaultBounds,
-    componentRestrictions: { country: "us" },
-    fields: ["address_components", "geometry", "icon", "name"],
-    strictBounds: false,
-    types: ["establishment"],
-  };
+    // Define the updated options for the Autocomplete instance
+    const updatedOptions = {
+      bounds: updatedBounds,
+      componentRestrictions: { country: "us" },
+      fields: ["address_components", "geometry", "icon", "name"],
+      strictBounds: false,
+      types: ["establishment"],
+    };
 
-  // Update the options for the Autocomplete instance
-  autoCompleteRef.current.setOptions(updatedOptions);
-}, [searchLocation]); // update the options when the searchLocation state changes
+    console.log('updatedOptions', updatedOptions)
+    // Update the options for the Autocomplete instance
+    autoCompleteRef.current.setOptions(updatedOptions);
+  } else if (searchLocation === null) { // if searchLocation is not set, use the default bounds and options
+    // Define the options for the Autocomplete instance
+    const defaultOptions = {
+      componentRestrictions: { country: "us" },
+      fields: ["address_components", "geometry", "icon", "name"],
+      types: ["establishment"],
+    };
+
+    // Update the options for the Autocomplete instance
+    autoCompleteRef.current.setOptions(defaultOptions);
+  }
+}, [searchLocation]);
 
 const onSearchLocationChange = (event) => {
   const postalCode = event.target.value; // get the value of the input element
-  if (postalCode.length === 5) { // check if input length is 5
+  if (/^[0-9]{5}$/.test(postalCode)) { // check if input length is 5
     // Use the Geocoder to convert the postal code to a LatLng object
     console.log('geocoding postal code...')
     const geocoder = new window.google.maps.Geocoder(); // create a new Geocoder instance
@@ -90,8 +101,11 @@ const onSearchLocationChange = (event) => {
         console.log('Geocode was not successful for the following reason: ' + status);
       }
     });
-  } else {
+  } else if (/^current location$/i.test(postalCode)){
     // handle invalid input length
+    console.log('setting search location to NULL...')
+    setSearchLocation(null);
+  } else {
     setSearchLocation(null);
   }
 };
