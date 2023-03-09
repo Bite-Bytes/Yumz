@@ -33,8 +33,7 @@ app.post(
     else return next();
   },
   userController.createUser,
-  cookieController.setJWTCookie,
-  sessionController.startSession
+  cookieController.setJWTCookie
 );
 
 app.post(
@@ -48,8 +47,7 @@ app.post(
     else return next();
   },
   userController.verifyUser,
-  cookieController.setJWTCookie,
-  sessionController.startSession
+  cookieController.setJWTCookie
 );
 
 app.post('/addToWishlist', collectionsController.addToWishlist, (req, res) => {
@@ -69,7 +67,7 @@ app.post(
 // addToReviews was empty
 app.post('/addToReviews', collectionsController.addToReviews, (req, res) => {
   res.status(200);
-  res.send(res.locals);
+  res.send(res.locals.query);
 });
 
 // removeFromFavorites

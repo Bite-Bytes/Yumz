@@ -23,8 +23,8 @@ userController.protect = (req, res, next) => {
   } catch (error) {
     return next({
       log: 'error running userController.protect middleware.',
-      status: 401,
-      message: { message: 'Not valid token' },
+      status: 400,
+      message: { message: error },
     });
   }
 };
@@ -34,8 +34,9 @@ userController.verifyUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     let hashedPassword = await db.query(
-      `SELECT email, password FROM users WHERE email = '${email}'`
+      `SELECT email, password, _id FROM users WHERE email = '${email}'`
     );
+    res.locals.userID = hashedPassword.rows[0]._id;
     hashedPassword = hashedPassword.rows[0].password;
 
     const isValidPW = await comparePassword(password, hashedPassword);
@@ -80,11 +81,9 @@ userController.createUser = async (req, res, next) => {
     );
     //getting that instance from the database and saving it to res.locals
     const queryResult = await db.query(
-      `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`
+      `SELECT * FROM users WHERE email = '${email}'`
     );
-    res.locals.user = queryResult.rows[0];
-
-    const userID = res.locals.user.user_id;
+    res.locals.userID = queryResult.rows[0]._id;
 
     return next();
   } catch (error) {
