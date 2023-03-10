@@ -24,7 +24,7 @@ td.stars {
 .star-overlay {
   display: inline;
   position: absolute;
-  width: 25px;
+  min-width: 25px;
   height: 25px;
 }
 
