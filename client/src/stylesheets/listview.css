@@ -33,7 +33,7 @@
 .map {
   width: 20rem;
   height: 35rem;
-  border: 2px solid red;
+  /* border: 2px solid red; */
   position: fixed;
   border-radius: 1rem;
   text-align: center;
