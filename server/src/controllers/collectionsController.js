@@ -102,45 +102,45 @@ collectionsController.getWishlist = async (req, res, next) => {
   }
 };
 
-collectionsController.addToFavorites = async (req, res, next) => {
-  try {
-    const { restaurant_id, is_favorite } = req.body;
-    const user_id = req.cookies.userID;
-    await db.query(
-      `UPDATE restaurant
-      SET is_favorite = '${is_favorite}'
-      WHERE _id = '${restaurant_id}'
-      AND user_id = '${user_id}'`
-    );
-    return next();
-  } catch (error) {
-    return next({
-      log: 'collectionsController.addToFavorites() ERROR',
-      status: 400,
-      message: { err: `in collectionsController.addToFavorites: ${error}` },
-    });
-  }
-};
+// collectionsController.addToFavorites = async (req, res, next) => {
+//   try {
+//     const { restaurant_id, is_favorite } = req.body;
+//     const user_id = req.cookies.userID;
+//     await db.query(
+//       `UPDATE restaurant
+//       SET is_favorite = '${is_favorite}'
+//       WHERE _id = '${restaurant_id}'
+//       AND user_id = '${user_id}'`
+//     );
+//     return next();
+//   } catch (error) {
+//     return next({
+//       log: 'collectionsController.addToFavorites() ERROR',
+//       status: 400,
+//       message: { err: `in collectionsController.addToFavorites: ${error}` },
+//     });
+//   }
+// };
 
-collectionsController.addToWishlist = async (req, res, next) => {
-  try {
-    const { restaurant_id, is_wishlist } = req.body;
-    const user_id = req.cookies.userID;
-    await db.query(
-      `UPDATE restaurant
-      SET is_wishlist = '${is_wishlist}'
-      WHERE _id = '${restaurant_id}'
-      AND user_id = '${user_id}'`
-    );
-    return next();
-  } catch (error) {
-    return next({
-      log: 'collectionsController.addToWishlist() ERROR',
-      status: 400,
-      message: { err: `in collectionsController.addToWishlist: ${error}` },
-    });
-  }
-};
+// collectionsController.addToWishlist = async (req, res, next) => {
+//   try {
+//     const { restaurant_id, is_wishlist } = req.body;
+//     const user_id = req.cookies.userID;
+//     await db.query(
+//       `UPDATE restaurant
+//       SET is_wishlist = '${is_wishlist}'
+//       WHERE _id = '${restaurant_id}'
+//       AND user_id = '${user_id}'`
+//     );
+//     return next();
+//   } catch (error) {
+//     return next({
+//       log: 'collectionsController.addToWishlist() ERROR',
+//       status: 400,
+//       message: { err: `in collectionsController.addToWishlist: ${error}` },
+//     });
+//   }
+// };
 
 collectionsController.addToReviews = async (req, res, next) => {
   try {

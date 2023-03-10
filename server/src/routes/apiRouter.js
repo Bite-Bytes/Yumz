@@ -21,23 +21,21 @@ router.get('/place-details', googlePlacesAPIController.getPlaceDetails);
 
 router.get('/yelpCategories', yelpFusionAPIController.getRestaurantDetails);
 
+const addToWishlist = '/addToWishList';
+const addToFavorites = '/addToFavorites';
 router.post(
   '/addToWishlist',
   restaurantController.addRestaurant,
-  collectionsController.addToWishlist,
   (req, res) => {
-    res.status(200);
-    res.send(res.locals);
+    res.json({ message: 'Added to wish list.' });
   }
 );
 
 router.post(
   '/addToFavorites',
   restaurantController.addRestaurant,
-  collectionsController.addToFavorites,
   (req, res) => {
-    res.status(200);
-    res.send(res.locals);
+    res.json({ message: 'Added to favorites.' });
   }
 );
 
