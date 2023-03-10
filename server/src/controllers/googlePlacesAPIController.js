@@ -117,6 +117,7 @@ googlePlacesAPIController.getPlaceDetails = async (req, res, next) => {
   try {
     console.log('In googlePlacesAPIController.getPlaceDetails');
     const { placeID } = req.query || res.locals;
+    console.log('PLACEID:', placeID);
     const placeDetailsResponse = await fetch(
       'https://maps.googleapis.com/maps/api/place/details/json?' +
         new URLSearchParams({
