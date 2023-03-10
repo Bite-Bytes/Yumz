@@ -5,19 +5,33 @@ const restaurantController = {};
 
 restaurantController.addRestaurant = async (req, res, next) => {
   try {
-    const { is_favorite, is_reviewed, is_wishlist, user_id } =
-      req.body.restaurant;
-
-    await db.query(
-      `INSERT INTO restaurant (is_favorite, is_reviewed, is_wishlist, user_id)
-      VALUES ('${is_favorite}', '${is_reviewed}', '${is_wishlist}', '${user_id}')`
+    let { is_favorite, is_reviewed, is_wishlist, googleplace_id } = req.body;
+    if (!is_favorite) is_favorite = false;
+    if (!is_reviewed) is_reviewed = false;
+    if (!is_wishlist) is_wishlist = false;
+    const user_id = req.cookies.userID;
+    // Check for restauraunt should pull the current isFav isRevi and isWish and overwrite those that need to be changed
+    const query = await db.query(
+      // check if googleplace id is in rest by user id
+      `SELECT * FROM restaurant
+      WHERE user_id = '${user_id}'
+      AND googleplace_id = '${googleplace_id}'`
     );
 
-    const newRestaurant = await db.query(
-      `SELECT * FROM restaurant WHERE user_id = '${user_id}' AND is_reviewed = ${is_reviewed}`
-    );
-
-    res.locals.restID = newRestaurant.rows[0]._id;
+    if (!query.rows[0]) {
+      // This means DB query pulled existing data.
+      await db.query(
+        `INSERT INTO restaurant (is_favorite, is_reviewed, is_wishlist, user_id, googleplace_id)
+        VALUES ('${is_favorite}', '${is_reviewed}', '${is_wishlist}', '${user_ID}', '${googleplace_id}')`
+      );
+    } else {
+      await db.query(
+        `UPDATE restaurant
+            SET is_wishlist = '${is_wishlist}'
+            WHERE googleplace_id = '${googleplace_id}'
+            AND user_id = '${user_id} `
+      );
+    }
 
     return next();
   } catch (err) {

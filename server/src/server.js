@@ -4,8 +4,7 @@ const morgan = require('morgan');
 const { body, validationResult } = require('express-validator');
 const cookieParser = require('cookie-parser');
 const userController = require('./controllers/userController');
-const restaurantController = require('./controllers/restaurantController');
-const collectionsController = require('./controllers/collectionsController');
+
 const cookieController = require('./controllers/cookieController');
 const sessionController = require('./controllers/sessionController');
 
@@ -49,35 +48,6 @@ app.post(
   userController.verifyUser,
   cookieController.setJWTCookie
 );
-
-app.post('/addToWishlist', collectionsController.addToWishlist, (req, res) => {
-  res.status(200);
-  res.send(res.locals);
-});
-
-app.post(
-  '/addToFavorites',
-  collectionsController.addToFavorites,
-  (req, res) => {
-    res.status(200);
-    res.send(res.locals);
-  }
-);
-
-// addToReviews was empty
-app.post('/addToReviews', collectionsController.addToReviews, (req, res) => {
-  res.status(200);
-  res.send(res.locals.query);
-});
-
-// removeFromFavorites
-
-// removeFromWishlist
-
-// Was sending without any data;
-app.get('/reviews', collectionsController.getRatings, (req, res) => {
-  res.status(200).send(res.locals.userRatings);
-});
 
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../../client/src/index.html'));

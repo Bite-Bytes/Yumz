@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react';
 import DetailsModal from './DetailsModal.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBurger, faMugHot, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faBurger, faMartiniGlass, faMartiniGlassEmpty, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as hollowHeart } from '@fortawesome/free-regular-svg-icons';
 
 
@@ -9,9 +9,9 @@ const ListItem = (props) => {
   const [modalStatus, setModalStatus] = useState(false);
   const [restaurantInfo, setRestaurantInfo] = useState({});
   const [detailsToggle, setDetailsToggle] = useState('Show details');
-  const [favIcon, setFavIcon] = useState(hollowHeart);
+  const [is_favorite, setFavorite] = useState(props.listing.is_favorite);
+  const [is_wishlist, setWishlist] = useState(props.listing.is_wishlist);
 
-  console.log('PROPS', props)
   const toggleModal = async (googlePlaceId) => {
     if (modalStatus) {
       setModalStatus(false);
@@ -26,16 +26,13 @@ const ListItem = (props) => {
     }
   };
 
-
   const showModal = async (googlePlaceId) => {
-    console.log(googlePlaceId);
     try {
       const requestUrl = `/api/place-details?placeID=${googlePlaceId}`;
 
       const response = await fetch(requestUrl);
       const restaurantDetails = await response.json();
 
-      console.log('RESTAURANT DETAILS', restaurantDetails);
       const newRestaurantInfo = await {};
       newRestaurantInfo['googlePlaceId'] = restaurantDetails.id;
       // newRestaurantInfo['yelpId'] = restaurantDetails.yelpId || 'get from yelp';
@@ -65,28 +62,54 @@ const ListItem = (props) => {
     else return ''
   }
 
-  const toggleFav = (googlePlaceId) => {
-    let is_favorite;
+  const getFavIcon = () => {
+    if (is_favorite) return faHeart;
+    return hollowHeart;
+  }
 
-    // NEED GET RESTAURANT ROUTE FROM BE - FOR NOW RELYING ON STATE
-    if (favIcon === hollowHeart) {
-      is_favorite = false;
-      setFavIcon(faHeart);
-    } else if (favIcon === faHeart) {
-      is_favorite = true;
-      setFavIcon(hollowHeart);
+  const getWishIcon = () => {
+    if (is_wishlist) return faMartiniGlass;
+    return faMartiniGlassEmpty;
+  }
 
-      const reqBody = {
-        googleplace_id: googlePlaceId,
-        is_favorite: true
-      };
+  const toggleFav = async (googlePlaceId) => {
+    const newIsFavorite = !is_favorite
 
-      // const response = await fetch('/addToFavorites', {
-      //   method: 'POST',
-      //   body: JSON.stringify
-      // })
+    setFavorite(newIsFavorite);
 
-    }
+    const reqBody = {
+      googleplace_id: googlePlaceId,
+      is_favorite: newIsFavorite
+    };
+
+    const response = await fetch('/api/addToFavorites', {
+      method: 'POST',
+      body: JSON.stringify(reqBody),
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    const jsonResponse = await response.json();
+    console.log(jsonResponse);
+  }
+
+  const toggleWish = async (googlePlaceId) => {
+    const newIsWishlist = !is_wishlist
+
+    setWishlist(newIsWishlist);
+
+    const reqBody = {
+      googleplace_id: googlePlaceId,
+      is_wishlist: newIsWishlist
+    };
+
+    const response = await fetch('/api/addToWishlist', {
+      method: 'POST',
+      body: JSON.stringify(reqBody),
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    const jsonResponse = await response.json();
+    console.log(jsonResponse);
   }
 
   return (
@@ -97,8 +120,9 @@ const ListItem = (props) => {
           <span className="item" id="address">{getAddress()}</span>
         </div>
         <div>
-          <button type="button" className="fav-button" onClick={() => toggleFav(props.listing.googlePlaceId)}><FontAwesomeIcon icon={favIcon} /></button>
           <span className="item" id="stars">{getStars()}</span>
+          <button type="button" className="wish-button" onClick={() => toggleWish(props.listing.googlePlaceId)}><FontAwesomeIcon icon={getWishIcon()} /></button>
+          <button type="button" className="fav-button" onClick={() => toggleFav(props.listing.googlePlaceId)}><FontAwesomeIcon icon={getFavIcon()} /></button>
           {/* <span className="item" id="cuisine">{props.listing.cuisine}</span>
       <span className="item" id="hours">{props.listing.hours}</span> */}
           {/* <button type="button" className="previewButton" onClick={() => setModalStatus(true)}>See Details</button> */}
