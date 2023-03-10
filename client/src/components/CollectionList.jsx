@@ -37,6 +37,7 @@ const CollectionList = (props) => {
     }];
   }
 
+
   return (
     <div className="listview" >
       <div className="collectionTitle">{props.listName}</div>
