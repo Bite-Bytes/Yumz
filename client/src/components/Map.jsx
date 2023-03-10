@@ -38,7 +38,7 @@ function Map( { google, googlePlaceId } ) {
             const marker = new window.google.maps.Marker({
               position: placeResult.geometry.location,
               map: map,
-              title: placeResult.name,
+              title: placeResult.name + ' - ' + placeResult.formatted_address, // add address to marker tooltip
             });
           } else {
             console.error('Error retrieving place details:', status);
@@ -49,7 +49,7 @@ function Map( { google, googlePlaceId } ) {
   }, []);
 
   // render a div with id "map" that will be used to render the map
-  return <div id="map" style={{ width: '100%', height: '400px' }} />;
+  return <div id="map" style={{ width: '100%', height: '100%' }} />;
 }
 
 export default Map;

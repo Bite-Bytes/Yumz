@@ -1,6 +1,7 @@
 import React, { Component, useState } from 'react';
 import '../stylesheets/listview.css';
 import ListItem from './ListItem.jsx';
+import Map from './Map.jsx';
 
 const CollectionList = (props) => {
   let restaurants;
@@ -81,7 +82,9 @@ const CollectionList = (props) => {
           )}
         </div>
         <div>
-          <div className="map">MAP HERE</div>
+          <div className="map">
+            <Map googlePlaceId={restaurants.map((el) => el.googlePlaceId)} />
+          </div>
         </div>
       </div>
     </div>
