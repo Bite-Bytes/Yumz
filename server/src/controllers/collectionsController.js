@@ -19,7 +19,7 @@ collectionsController.getReviews = async (req, res, next) => {
       AND ra.user_id = '${user_id}'
       AND r.is_reviewed = true`
     );
-    res.locals.userRWF = userReviews.rows[0];
+    res.locals.userRWF = userReviews.rows;
     res.locals.reviews = true;
     return next();
   } catch (error) {
@@ -152,14 +152,16 @@ collectionsController.addToReviews = async (req, res, next) => {
       atmosphere_score,
       price_score,
       notes,
-      rest_id,
     } = req.body;
-    const user_id = req.cookies.user_id;
+
+    const rest_id = res.locals.restaurantID;
+    const user_id = req.cookies.userID;
 
     const query = await db.query(
       `INSERT INTO rating (user_id, date_updated, overall_score, service_score, food_score, atmosphere_score, price_score, notes, rest_id)
       VALUES ('${user_id}', '${date_updated}', '${overall_score}', '${service_score}', '${food_score}', '${atmosphere_score}', '${price_score}', '${notes}', ${rest_id})`
     );
+
     res.locals.query = query;
     return next();
   } catch (error) {
@@ -172,7 +174,7 @@ collectionsController.addToReviews = async (req, res, next) => {
 };
 collectionsController.processRWF = async (req, res, next) => {
   console.log('In processing RWF');
-  if (res.locals.userRWF) {
+  if (res.locals.userRWF[0]) {
     const restaurants = [];
     for (const review of res.locals.userRWF) {
       const {
@@ -218,16 +220,7 @@ collectionsController.processRWF = async (req, res, next) => {
     res.locals.getReviews = restaurants;
     res.json(restaurants);
   } else {
-    if (res.locals.reviews) {
-      var RWF = 'reviews';
-    } else if (res.locals.favorites) {
-      var RWF = 'favorites';
-    } else if (res.locals.wishList) {
-      var RWF = 'wishlist';
-    }
-    res.json({
-      message: `No ${RWF} yet`,
-    });
+    res.json([]);
   }
 };
 // collectionsController.removeFromFavorites = async (req, res, next) => {
