@@ -2,9 +2,8 @@ import React, { Component, useState } from 'react';
 import '../stylesheets/listview.css';
 import ListItem from './ListItem.jsx';
 
-const CollectionList = async (props) => {
+const CollectionList = (props) => {
   let restaurants;
-  let response;
   if (props.listName === 'Reviews') {
     restaurants = [{
       name: 'Luciano',
@@ -46,27 +45,36 @@ const CollectionList = async (props) => {
       is_favorite: true,
       googlePlaceId: 'ChIJl3ZTXIr3rIkR5R45ePwPzL4'
     }];
-  } else if (props.listName === 'Reviews') {
-    response = await fetch('/api/reviews')
-    restaurants = await response.json()
-  } else if (props.listName === 'Wishlist') {
-    response = await fetch('/api/wishlist')
-    restaurants = await response.json()
-  } else if (props.listName === 'Favorites') {
-    response = await fetch('/api/favorites')
-    restaurants = await response.json()
+  } else getFromDb()
+
+  const getFromDb = async () => {
+    let response;
+    if (props.listName === 'Reviews') {
+      response = await fetch('/api/reviews')
+      restaurants = await response.json()
+    } else if (props.listName === 'Wishlist') {
+      response = await fetch('/api/wishlist')
+      restaurants = await response.json()
+    } else if (props.listName === 'Favorites') {
+      response = await fetch('/api/favorites')
+      restaurants = await response.json()
+    }
   }
 
   return (
     <div className="listview" >
       <div className="collectionTitle">{props.listName}</div>
-      <div className="list-items">
-        {restaurants.map((listing) => ( //each restautant in array, return a listitem
-          <ListItem listing={listing} key={listing.googlePlaceId} />
-        ))}
+      <div className="list-map">
+        <div className="list-items">
+          {restaurants.map((listing) => ( //each restautant in array, return a listitem
+            <ListItem listing={listing} key={listing.googlePlaceId} />
+          ))}
+        </div>
+        <div>
+          <div className="map">MAP HERE</div>
+        </div>
       </div>
     </div>
-
   );
 };
 

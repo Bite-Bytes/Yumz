@@ -5,7 +5,7 @@
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
-  width: 50rem;
+  width: 40rem;
   align-items: center;
 }
 
@@ -16,10 +16,27 @@
   cursor: pointer;
 }
 
+.list-map {
+  display: flex;
+  gap: 2rem;
+}
+
 .list-items {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  overflow-y: scroll;
+  max-height: 35rem;
+  padding-right: 5px;
+}
+
+.map {
+  width: 20rem;
+  height: 35rem;
+  border: 2px solid red;
+  position: fixed;
+  border-radius: 1rem;
+  text-align: center;
 }
 
 .item {
