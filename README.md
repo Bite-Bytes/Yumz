@@ -6,4 +6,14 @@
 
 </div>
 
+Yumz is a fullstack restaurant diary application for people who want to remember what places they like and don't like without having to leave an official review on existing platforms.
+
 ## Summary
+
+Yumz allows users to keep track of their dining experiences by providing the following features:
+
+- **Login and Auth**: Users can create an account and securely log in to access personalized content and features.
+- **Restaurant Lookup**: Users can search for restaurants in a specific location to find nearby options.
+- **Personal Reviews**: Users can leave ratings on restaurants they have visited to refer to in the future.
+- **Wishlist**: Users can save restaurants they want to try in the future.
+- **Favorites**: Users can mark their favorite restaurants for easy access and reference.
