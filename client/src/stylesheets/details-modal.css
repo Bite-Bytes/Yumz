@@ -64,6 +64,7 @@ td {
   width: 40rem;
   margin-left: 6px;
   padding-top: 30px;
+  position: relative;
 }
 
 #rating-notes {

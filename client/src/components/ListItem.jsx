@@ -24,6 +24,19 @@ const ListItem = (props) => {
       setModalStatus(true);
       setDetailsToggle('Hide details');
     }
+
+    const reqBody = {
+      googleplace_id: googlePlaceId,
+    };
+
+    const response = await fetch('/api/userRatings', {
+      method: 'GET',
+      body: JSON.stringify(reqBody),
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    const jsonResponse = await response.json();
+    console.log(jsonResponse);
   };
 
   const showModal = async (googlePlaceId) => {
