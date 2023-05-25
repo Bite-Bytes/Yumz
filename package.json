@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon server/src/server.js",
     "build": "webpack --mode production",
-    "dev": "webpack-dev-server --mode development --open --hot & nodemon server/src/server.js"
+    "dev": "webpack-dev-server --mode development --open --hot --history-api-fallback & nodemon server/src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -28,11 +28,21 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+    "@fortawesome/free-regular-svg-icons": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "bcrypt": "^5.1.0",
     "concurrently": "^7.6.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "node-fetch": "^3.3.0",
+    "express-validator": "^6.15.0",
+    "file-loader": "^6.2.0",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.9",
+    "pg": "^8.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.8.2",

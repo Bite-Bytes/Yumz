@@ -1,0 +1,63 @@
+.new-restaurant-button {
+  margin-bottom: 1rem;
+  padding: 0 2rem;
+  height: 2.5rem;
+  font-family: 'League Spartan', sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  background-color: #FD7F32;
+  border: 1px solid #FD7F32;
+  border-radius: 7px;
+  color: #522952;
+  align-self: flex-start;
+}
+
+.new-restaurant-button:hover {
+  background-color: #ff7621;
+}
+
+.details-modal-btn {
+  width: 10rem;
+}
+
+#next-button {
+  float: right;
+}
+
+#new-restaurant-info {
+  font-family: 'Fredoka One', sans-serif;
+  background: #F4E8F4;
+  color: #474747;
+  padding: 2rem;
+  padding: 50px;
+  border: 5px solid #FD7F32;
+  background-color: #EAD9EB;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#new-restaurant-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.new-restaurant-prompt {
+  font-size: 1.2rem;
+}
+
+.new-restaurant-input {
+  height: 2rem;
+  width: 20rem;
+  border: 1px solid #884488;
+  border-radius: 3px;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  padding-left: 1rem;
+}
+
+#return-home-btn {
+  margin-right: 30rem;
+}

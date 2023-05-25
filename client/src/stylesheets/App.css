@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+}
+
+.router {
+  background-color: #FCF9E8;
+  min-height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 7rem auto;
+  grid-template-rows: fit-content(8rem) fit-content(100px) auto;
+  grid-gap: 3rem;
+  position: fixed;
+}
+
+#main-container {
+  display: flex;
+  justify-content: center;
+}
